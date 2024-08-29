@@ -1,10 +1,8 @@
 const api = axios.create({
-    baseUrl: 'http://api.themoviedb.org/3',
+    baseURL: 'https://api.themoviedb.org/3',
     headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-    },
-    params: {
-        'api_key': API_KEY,
+        'Content-Type': 'application/json;charset=utf-8',
+        'Authorization': `Bearer ${API_KEY}`
     }
 });
 
@@ -12,51 +10,30 @@ const URL_BASE = 'http://api.themoviedb.org/3';
 const URL_BASE_IMG = 'https://image.tmdb.org/t/p/w500/';
 const URL_BASE_IMG_2000 = 'https://image.tmdb.org/t/p/original';
 
-const URL_TRENDING = URL_BASE + '/trending/all/day'
+const URL_TRENDING = '/trending/all/day'
 
-const URL_MOVIE_POPULAR = URL_BASE + '/movie/popular';
-const URL_TOP_RATED_MOVIES = URL_BASE + '/movie/top_rated';
-const URL_UPCOMING_MOVIES = URL_BASE + '/movie/upcoming';
+const URL_MOVIE_POPULAR = '/movie/popular';
+const URL_TOP_RATED_MOVIES = '/movie/top_rated';
+const URL_UPCOMING_MOVIES = '/movie/upcoming';
 
 const URL_CATEGORIES = URL_BASE + '/genre/movie/list'
 
 const URL_TOP_RATED_SERIES = URL_BASE + '/tv/top_rated';
 
-// Se crean los elementos del navbar
-const homeLink = document.getElementById('home-link');
-const moviesLink = document.getElementById('movies-link');
-const categoriesLink = document.getElementById('categories-link');
-const myListLink = document.getElementById('my-list-link');
+const create = (elemento) => document.createElement(elemento);
 
-// Elementos del panel principal
-const mainPanel = document.getElementById('main-movie-img-container');
-const homeMainTitle = document.getElementById('main-title');
-const homeMovieDescription = document.getElementById('movie-description')
-const homeMovieRating = document.getElementById('rating');
-const homeMovieDuration = document.getElementById('duration');
-const homeMovieReleaseDate = document.getElementById('release-date');
-const homeMovieMediaType = document.getElementById('media-type');
-
-//Crear los elementos de todas las divisiones
-const homeBody = document.getElementById('main-home');
-const categoriesBody = document.getElementById('categories-body');
-const searchBody = document.getElementById('search-body');
-const moviePreview = document.getElementById('movie-preview');
-
-//Variable que guarda la página actual
-let currentPage = 'none';
 
  function createMoviesCards (movies, containerName) {
     const movieCardsContainer = document.getElementById(containerName);
 
      movies.forEach(movie => {
-        const movieCard = document.createElement('div');
+        const movieCard = create('div');
         movieCard.className = 'movie-card';
 
-        const posterContainer = document.createElement('div');
+        const posterContainer = create('div');
         posterContainer.className = 'poster-container';
 
-        const movieImg = document.createElement('img');
+        const movieImg = create('img');
         movieImg.className = 'movie-img';
         if (movie.title === undefined) {
             movieImg.alt = movie.name;
@@ -65,10 +42,10 @@ let currentPage = 'none';
         }
         movieImg.src = URL_BASE_IMG + movie.poster_path;
 
-        const saveButton = document.createElement('button');
+        const saveButton = create('button');
         saveButton.className = 'save-button';
 
-        const saveIcon = document.createElement('img');
+        const saveIcon = create('img');
         saveIcon.className = 'save-icon';
         saveIcon.alt = 'save';
         saveIcon.src = './public/saveIcon.svg';
@@ -77,10 +54,10 @@ let currentPage = 'none';
         posterContainer.appendChild(movieImg);
         posterContainer.appendChild(saveButton);
 
-        const movieTitleLike = document.createElement('div');
+        const movieTitleLike = create('div');
         movieTitleLike.className = 'movie-title-like';
 
-        const movieTitle = document.createElement('p');
+        const movieTitle = create('p');
         movieTitle.className = 'movie-title';
         if (movie.title === undefined) {
             movieTitle.textContent = movie.name;
@@ -88,10 +65,10 @@ let currentPage = 'none';
             movieTitle.textContent = movie.title;
         }
 
-        const likeButton = document.createElement('button');
+        const likeButton = create('button');
         likeButton.className = 'like-button';
 
-        const likeIcon = document.createElement('img');
+        const likeIcon = create('img');
         likeIcon.className = 'like-icon';
         likeIcon.alt = 'like';
         likeIcon.src = './public/likeIcon.svg';
@@ -110,17 +87,9 @@ let currentPage = 'none';
 
 async function modifyMainPanel (movieId, panel, mediaType) {
    
-    const URL = URL_BASE + `/${mediaType}/${movieId}`;
-    console.log(URL);
-    const res = await fetch (URL, {
-            method: 'GET',
-            headers: {
-                accept: 'application/json',
-                Authorization: 'Bearer ' + API_KEY
-            }
-    })
+    const { data } = await api(`/${mediaType}/${movieId}`);
 
-    const data = await res.json();
+
     console.log(data);
 
     if (mediaType === 'movie') {
@@ -141,15 +110,7 @@ async function modifyMainPanel (movieId, panel, mediaType) {
 }
 
 async function getMoviesPreview (URL, container, mediaNumber, sectionNumber) {
-    const res = await fetch(URL, {
-        method: 'GET',
-        headers: {
-            accept: 'application/json',
-            Authorization: 'Bearer ' + API_KEY
-        }
-    }  );
-
-    const data = await res.json();
+    const { data } = await api(URL);
     
     const movies = data.results;
     console.log(movies)
@@ -189,37 +150,6 @@ async function getMoviesPreview (URL, container, mediaNumber, sectionNumber) {
     
 }
 
-async function chargeHome() {
-    homeBody.style.display = 'flex';
-    categoriesBody.style.display = 'none';
-    searchBody.style.display = 'none';
-
-    if (currentPage !== 'home'){
-        const containers = document.querySelectorAll('#main-home .movie-cards');
-
-        containers.forEach(container => {
-            container.innerHTML = '';
-        })
-
-        const mediaRandomNumber = Math.floor(Math.random() * 20);
-        const sectionRandomNumber = Math.floor(Math.random() * 5);
-        console.log(mediaRandomNumber, sectionRandomNumber);
-
-        getMoviesPreview(URL_TRENDING, 'trending', mediaRandomNumber, sectionRandomNumber);
-        getMoviesPreview(URL_TOP_RATED_SERIES, 'top-rated-series', mediaRandomNumber, sectionRandomNumber);
-        getMoviesPreview(URL_MOVIE_POPULAR, 'popular-movies', mediaRandomNumber, sectionRandomNumber);
-        getMoviesPreview(URL_TOP_RATED_MOVIES, 'top-rated-movies', mediaRandomNumber, sectionRandomNumber);
-        getMoviesPreview(URL_UPCOMING_MOVIES, 'upcoming-movies', mediaRandomNumber, sectionRandomNumber);
-
-        currentPage = 'home'
-    }
-
-}
-
-chargeHome();
-
-homeLink.addEventListener('click', chargeHome);
-
 async function getCategoriesPreview() {
     const res = await fetch(URL_CATEGORIES, {
         method: 'GET',
@@ -233,21 +163,17 @@ async function getCategoriesPreview() {
 
     const categories = data.genres;
 
-    const categoriesContainer = document.getElementById('categories-container');
-
-    if (currentPage !== 'categories'){
         categoriesContainer.innerHTML = '';
 
         categories.forEach(category => {
-            const categoryButton = document.createElement('button');
+            const categoryButton = create('button');
             categoryButton.id = 'c' + category.id;
             categoryButton.textContent = category.name;
     
             categoriesContainer.appendChild(categoryButton);
         })
 
-        currentPage = 'categories';
-    }
+        location.hash = '#categories';
 
 }
 
@@ -259,10 +185,10 @@ async function chargeCategories(event) {
     getCategoriesPreview();
 }
 
-categoriesLink.addEventListener('click', chargeCategories);
+// categoriesLink.addEventListener('click', chargeCategories);
 
 function mostrarPopup() {
-    const overlay = document.createElement('div');
+    const overlay = create('div');
     overlay.className = 'popup-overlay';
 
     moviePreview.style.display = 'block';

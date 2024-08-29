@@ -29,10 +29,10 @@
           </div>
         </div>
         <div class="navbar-options">
-          <a href="#" id="home-link" >Home</a>
-          <a href="#" id="movies-link" >Movies</a>
-          <a href="#" id="categories-link">Categories</a>
-          <a href="#" id="my-list-link">My List</a>
+          <a href="#" id="homeLink" >Home</a>
+          <a href="#movies" id="moviesLink" >Movies</a>
+          <a href="#categories" id="categoriesLink">Categories</a>
+          <a href="#mylist" id="myListLink">My List</a>
           <button class="user-icon-button">
             <img
             class="user-icon"
@@ -45,11 +45,11 @@
       </div>
     </header>
 
-    <div id="main-home" class="home">
+    <div id="homeBody" class="home">
       
       <div id="main-panel" class="main-panel">
 
-        <div id="main-movie-img-container"></div>
+        <div id="mainPanel"  class="main-movie-img-container"></div>
        
         <div class="user-panel">
           <div class="info-container">
@@ -59,17 +59,17 @@
               alt=""
               src="./public/image-10@2x.png"
             /> -->
-            <h2 id="main-title"></h2>
+            <h2 id="homeMainTitle" class="main-title"></h2>
             <div class="movie-info">
               <div class="rating-stars">
                 <div class="rating-duration-like-container">
                   
                       <div class="rating-duration-container">
                         <p>☆</p>
-                        <p id="rating">  </p>
+                        <p id="homeMovieRating">  </p>
                         <p class="point">·</p>
-                        <p id="release-date"></p>
-                        <p id="media-type"></p>
+                        <p id="homeMovieReleaseDate"></p>
+                        <p id="homeMovieMediaType"></p>
                       </div>
 
                   <button class="like-button">
@@ -82,7 +82,7 @@
 
                 </div>
                 <div class="movie-description-container">
-                  <p id="movie-description">
+                  <p id="homeMovieDescription" class="movie-description">
                     
                   </p>
                 </div>
@@ -181,9 +181,9 @@
       </main>
     </div>
 
-    <div id="categories-body" class="home">
+    <div id="categoriesBody" class="home">
       
-      <section id="categories-container" class="categories-options">
+      <section id="categoriesContainer" class="categories-options">
         <!-- <button id="c1">action</button> -->
       </section>
       
@@ -1170,7 +1170,7 @@
       </main>
     </div>
     
-    <div id="search-body" class="home">
+    <div id="searchBody" class="home">
       
       <main class="movies">
         <section class="popular-movies-list">
@@ -1375,7 +1375,7 @@
       </main>
     </div>
 
-    <div id="movie-preview" class="popup">
+    <div id="moviePreview" class="popup">
       
       <div class="main-panel">
         
@@ -1679,5 +1679,6 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./src/secrets.js"></script>
     <script src="./src/main.js"></script>
+    <script src="./src/navigation.js"></script>
   </body>
 </html>
