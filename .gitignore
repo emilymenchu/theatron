@@ -131,3 +131,7 @@ dist
 
 # Secrets.js (API_KEY)
 src/secrets.js
+
+# images
+images/
+public/
