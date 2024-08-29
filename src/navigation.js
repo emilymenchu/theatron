@@ -57,7 +57,7 @@ function chargeHome() {
 
 function chargeCategories() {
     categoriesBody.style.display = 'flex';
-    homeBody.style.display = 'none';
+    mainPanel.style.display = 'none';
     searchBody.style.display = 'none';
     getCategoriesPreview();
 }
