@@ -22,16 +22,16 @@
             <a class="platzi-movies">Platzi Movies</a>
           </div>
           <div class="search-background">
+            <input class="search-input" placeholder="Search" type="text" />
             <button class="search-button">
               <img class="search-icon" alt="" src="./public/search.svg" />
             </button>
-            <input class="search-input" placeholder="Search" type="text" />
           </div>
         </div>
         <div class="navbar-options">
-          <a href="#" id="homeLink" >Home</a>
-          <a href="#movies" id="moviesLink" >Movies</a>
-          <a href="#categories" id="categoriesLink">Categories</a>
+          <a href="#home" id="homeLink" >Home</a>
+          <a href="#series" id="moviesLink" >Series</a>
+          <a href="#movies" id="categoriesLink">Movies</a>
           <a href="#mylist" id="myListLink">My List</a>
           <button class="user-icon-button">
             <img
@@ -49,7 +49,7 @@
       
       <div id="mainPanel" class="main-panel">
 
-        <div id="mainPanel"  class="main-movie-img-container"></div>
+        <div class="main-movie-img-container"></div>
        
         <div class="user-panel">
           <div class="info-container">
@@ -98,16 +98,24 @@
         </div>
       </div>
       
-      <main class="movies">
+      <div id="categoriesBody" class="home">
+      
+        <section id="categoriesContainer" class="categories-options">
+          <!-- <button id="c1">action</button> -->
+        </section>
+      </div>
+      
+
+      <main id="moviesBody" class="movies">
         <section class="popular-movies-list">
           
 
           <div class="movies-section">
             <div class="section-container">
-              <h2 class="section-title">Trending Now</h2>
+              <h2 id="title1" class="section-title">Trending Now</h2>
               <div class="movie-scroll">
                 <div class="cards-container">
-                  <div id="trending" class="movie-cards">
+                  <div id="movie-cards1" class="movie-cards">
 
                   <!-- Content -->
 
@@ -119,10 +127,10 @@
 
           <div class="movies-section">
             <div class="section-container">
-              <h2 class="section-title">Top Rated series</h2>
+              <h2 id="title2" class="section-title">Top Rated series</h2>
               <div class="movie-scroll">
                 <div class="cards-container">
-                  <div id="top-rated-series" class="movie-cards">
+                  <div id="movie-cards2" class="movie-cards">
 
                 <!-- content -->
 
@@ -134,10 +142,10 @@
           
           <div class="movies-section">
             <div class="section-container">
-              <h2 class="section-title">popular movies</h2>
+              <h2 id="title3" class="section-title">popular movies</h2>
               <div class="movie-scroll">
                 <div class="cards-container">
-                  <div id="popular-movies" class="movie-cards">
+                  <div id="movie-cards3" class="movie-cards">
 
                  <!-- content -->
 
@@ -149,10 +157,10 @@
 
           <div class="movies-section">
             <div class="section-container">
-              <h2 class="section-title">Top rated movies</h2>
+              <h2 id="title4" class="section-title">Top rated movies</h2>
               <div class="movie-scroll">
                 <div class="cards-container">
-                  <div id="top-rated-movies" class="movie-cards">
+                  <div id="movie-cards4" class="movie-cards">
 
                    <!-- content -->
 
@@ -164,10 +172,10 @@
 
           <div class="movies-section">
             <div class="section-container">
-              <h2 class="section-title">Upcoming movies</h2>
+              <h2 id="title5" class="section-title">Upcoming movies</h2>
               <div class="movie-scroll">
                 <div class="cards-container">
-                  <div id="upcoming-movies" class="movie-cards">
+                  <div id="movie-cards5" class="movie-cards">
 
                     <!-- content -->
 
@@ -181,19 +189,6 @@
       </main>
     </div>
 
-    <div id="categoriesBody" class="home">
-      
-      <section id="categoriesContainer" class="categories-options">
-        <!-- <button id="c1">action</button> -->
-      </section>
-      
-      <!-- <main class="movies-categories">
-        <section class="popular-movies-list">
-          
-
-        </section>
-      </main> -->
-    </div>
     
     <div id="searchBody" class="home">
       
@@ -203,12 +198,12 @@
 
           <div class="movies-section">
             <div class="section-container">
-              <h2 class="section-title">s/c</h2>
+              <h2 id="searchTitle" class="section-title"></h2>
               <div class="movie-scroll1">
                 <div class="cards-container1">
-                  <div class="movie-cards1">
+                  <div id="searchCards" class="movie-cards1">
 
-                    <div class="movie-card">
+                    <!-- <div class="movie-card">
                       <div class="poster-container">
                         <img class="movie-img"
                         alt="movie"
@@ -232,163 +227,7 @@
                           />
                         </button>
                       </div>
-                    </div>
-
-                    <div class="movie-card">
-                      <div class="poster-container">
-                        <img class="movie-img"
-                        alt="movie"
-                        src="./public/2.png"
-                        />
-                        <button class="save-button">
-                          <img
-                          class="save-icon"
-                          alt="save"
-                          src="./public/saveIcon.svg"
-                          />
-                        </button>
-                      </div>
-                      <div class="movie-title-like">
-                        <p class="movie-title">Winnie The Pooh, Blood and Honey</p>
-                        <button class="like-button">
-                          <img
-                          class="like-icon"
-                          alt="like"
-                          src="./public/likeIcon.svg"
-                          />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div class="movie-card">
-                      <div class="poster-container">
-                        <img class="movie-img"
-                        alt="movie"
-                        src="./public/3.png"
-                        />
-                        <button class="save-button">
-                          <img
-                          class="save-icon"
-                          alt="save"
-                          src="./public/saveIcon.svg"
-                          />
-                        </button>
-                      </div>
-                      <div class="movie-title-like">
-                        <p class="movie-title">Star Wars</p>
-                        <button class="like-button">
-                          <img
-                          class="like-icon"
-                          alt="like"
-                          src="./public/likeIcon.svg"
-                          />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div class="movie-card">
-                      <div class="poster-container">
-                        <img class="movie-img"
-                        alt="movie"
-                        src="./public/4.png"
-                        />
-                        <button class="save-button">
-                          <img
-                          class="save-icon"
-                          alt="save"
-                          src="./public/saveIcon.svg"
-                          />
-                        </button>
-                      </div>
-                      <div class="movie-title-like">
-                        <p class="movie-title">Shrek 2</p>
-                        <button class="like-button">
-                          <img
-                          class="like-icon"
-                          alt="like"
-                          src="./public/likeIcon.svg"
-                          />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div class="movie-card">
-                      <div class="poster-container">
-                        <img class="movie-img"
-                        alt="movie"
-                        src="./public/5.png"
-                        />
-                        <button class="save-button">
-                          <img
-                          class="save-icon"
-                          alt="save"
-                          src="./public/saveIcon.svg"
-                          />
-                        </button>
-                      </div>
-                      <div class="movie-title-like">
-                        <p class="movie-title">Harry Potter y la piedra filosofal</p>
-                        <button class="like-button">
-                          <img
-                          class="like-icon"
-                          alt="like"
-                          src="./public/likeIcon.svg"
-                          />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div class="movie-card">
-                      <div class="poster-container">
-                        <img class="movie-img"
-                        alt="movie"
-                        src="./public/6.png"
-                        />
-                        <button class="save-button">
-                          <img
-                          class="save-icon"
-                          alt="save"
-                          src="./public/saveIcon.svg"
-                          />
-                        </button>
-                      </div>
-                      <div class="movie-title-like">
-                        <p class="movie-title">Joker</p>
-                        <button class="like-button">
-                          <img
-                          class="like-icon"
-                          alt="like"
-                          src="./public/likeIcon.svg"
-                          />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div class="movie-card">
-                      <div class="poster-container">
-                        <img class="movie-img"
-                        alt="movie"
-                        src="./public/1.png"
-                        />
-                        <button class="save-button">
-                          <img
-                          class="save-icon"
-                          alt="save"
-                          src="./public/saveIcon.svg"
-                          />
-                        </button>
-                      </div>
-                      <div class="movie-title-like">
-                        <p class="movie-title">Oppenheimer</p>
-                        <button class="like-button">
-                          <img
-                          class="like-icon"
-                          alt="like"
-                          src="./public/likeIcon.svg"
-                          />
-                        </button>
-                      </div>
-                    </div>
+                    </div> -->
 
                   </div>
                 </div>
@@ -403,18 +242,17 @@
     <div id="moviePreview" class="popup">
       
       <div class="main-panel">
+
+        <div id="mpPanel"></div>
+
         
-        <div class="user-panel">
-          <button class="back-button">
-            <img src="./public/back-arrow.png" alt="back-arrow">
+        <div class="pvuser-panel">
+          <button id="backButton"  class="back-button">
+            <img src="./public/arrow-back1.svg" alt="back-arrow">
           </button>
-          <div class="image-10-parent">
-            <img
-              class="image-10-icon"
-              loading="lazy"
-              alt=""
-              src="./public/image-10@2x.png"
-            />
+          <div class="info-container">
+            
+            <h2 id="mpMainTitle" class="main-title"></h2>
 
             <div class="movie-info">
               <div class="rating-stars">
@@ -422,9 +260,10 @@
                   
                       <div class="rating-duration-container">
                         <p>☆</p>
-                        <p id="rating">7.5</p>
+                        <p id="mpRating"></p>
                         <p class="point">·</p>
-                        <p id="duration">2h 43m</p>
+                        <p id="mpReleasedDate"></p>
+                        <p id="mpMovieMediaType"></p>
                       </div>
 
                   <button class="like-button">
@@ -453,43 +292,14 @@
       <main class="movie-details-parent">
 
         <section class="movie-details">
-          <p id="movie-description">
-            Young Blade Runner K's discovery of a long-buried secret
-            leads him to track down former Blade Runner Rick Deckard,
-            who's been missing for thirty years.
+          <h2>Overview</h2>
+          <p id="mpDescription">
           </p>
-         <div class="director-date-container">
-            <div>
-              <p>Director:</p>
-              <p id="director">Denis Vileneuve</p>
-            </div>
-            <div>
-              <p>Date:</p>
-              <p id="Date">2017</p>
-            </div>
+         <div id="creatorsContainer" class="creators-container">
+              <p>Creators:</p>
          </div>
           <h2>Categories</h2>
-           <div class="movie-categories">
-            <div id="movie-category-1" class="movie-category">sci fi</div>
-            <div id="movie-category-2" class="movie-category">action</div>
-            <div id="movie-category-3" class="movie-category">romance</div>
-            <div id="movie-category-4" class="movie-category">comedy</div>
-            <div id="movie-category-5" class="movie-category">fiction</div>
-          </div>
-          <h2>Cast</h2>
-          <div class="cast">
-            <p>Ryan Gosling</p>
-            <p>Harrison Ford</p>
-            <p>Ryan Gosling</p>
-            <p>Harrison Ford</p>
-            <p>Ryan Gosling</p>
-            <p>Harrison Ford</p>
-            <p>Ryan Gosling</p>
-            <p>Harrison Ford</p>
-            <p>Ryan Gosling</p>
-            <p>Harrison Ford</p>
-            <p>Ryan Gosling</p>
-            <p>Harrison Ford</p>
+          <div id="pvCategoriesContainer" class="movie-categories">
           </div>
         </section>
 
@@ -501,9 +311,9 @@
               <h2 class="section-title">Similar Movies</h2>
               <div class="movie-scroll">
                 <div class="cards-container">
-                  <div class="movie-cards">
+                  <div id="pvSimilarContainer" class="movie-cards">
 
-                    <div class="movie-card">
+                    <!-- <div class="movie-card">
                       <div class="poster-container">
                         <img class="movie-img"
                         alt="movie"
@@ -527,163 +337,7 @@
                           />
                         </button>
                       </div>
-                    </div>
-
-                    <div class="movie-card">
-                      <div class="poster-container">
-                        <img class="movie-img"
-                        alt="movie"
-                        src="./public/2.png"
-                        />
-                        <button class="save-button">
-                          <img
-                          class="save-icon"
-                          alt="save"
-                          src="./public/saveIcon.svg"
-                          />
-                        </button>
-                      </div>
-                      <div class="movie-title-like">
-                        <p class="movie-title">Winnie The Pooh, Blood and Honey</p>
-                        <button class="like-button">
-                          <img
-                          class="like-icon"
-                          alt="like"
-                          src="./public/likeIcon.svg"
-                          />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div class="movie-card">
-                      <div class="poster-container">
-                        <img class="movie-img"
-                        alt="movie"
-                        src="./public/3.png"
-                        />
-                        <button class="save-button">
-                          <img
-                          class="save-icon"
-                          alt="save"
-                          src="./public/saveIcon.svg"
-                          />
-                        </button>
-                      </div>
-                      <div class="movie-title-like">
-                        <p class="movie-title">Star Wars</p>
-                        <button class="like-button">
-                          <img
-                          class="like-icon"
-                          alt="like"
-                          src="./public/likeIcon.svg"
-                          />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div class="movie-card">
-                      <div class="poster-container">
-                        <img class="movie-img"
-                        alt="movie"
-                        src="./public/4.png"
-                        />
-                        <button class="save-button">
-                          <img
-                          class="save-icon"
-                          alt="save"
-                          src="./public/saveIcon.svg"
-                          />
-                        </button>
-                      </div>
-                      <div class="movie-title-like">
-                        <p class="movie-title">Shrek 2</p>
-                        <button class="like-button">
-                          <img
-                          class="like-icon"
-                          alt="like"
-                          src="./public/likeIcon.svg"
-                          />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div class="movie-card">
-                      <div class="poster-container">
-                        <img class="movie-img"
-                        alt="movie"
-                        src="./public/5.png"
-                        />
-                        <button class="save-button">
-                          <img
-                          class="save-icon"
-                          alt="save"
-                          src="./public/saveIcon.svg"
-                          />
-                        </button>
-                      </div>
-                      <div class="movie-title-like">
-                        <p class="movie-title">Harry Potter y la piedra filosofal</p>
-                        <button class="like-button">
-                          <img
-                          class="like-icon"
-                          alt="like"
-                          src="./public/likeIcon.svg"
-                          />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div class="movie-card">
-                      <div class="poster-container">
-                        <img class="movie-img"
-                        alt="movie"
-                        src="./public/6.png"
-                        />
-                        <button class="save-button">
-                          <img
-                          class="save-icon"
-                          alt="save"
-                          src="./public/saveIcon.svg"
-                          />
-                        </button>
-                      </div>
-                      <div class="movie-title-like">
-                        <p class="movie-title">Joker</p>
-                        <button class="like-button">
-                          <img
-                          class="like-icon"
-                          alt="like"
-                          src="./public/likeIcon.svg"
-                          />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div class="movie-card">
-                      <div class="poster-container">
-                        <img class="movie-img"
-                        alt="movie"
-                        src="./public/1.png"
-                        />
-                        <button class="save-button">
-                          <img
-                          class="save-icon"
-                          alt="save"
-                          src="./public/saveIcon.svg"
-                          />
-                        </button>
-                      </div>
-                      <div class="movie-title-like">
-                        <p class="movie-title">Oppenheimer</p>
-                        <button class="like-button">
-                          <img
-                          class="like-icon"
-                          alt="like"
-                          src="./public/likeIcon.svg"
-                          />
-                        </button>
-                      </div>
-                    </div>
+                    </div> -->
 
                   </div>
                 </div>
@@ -704,6 +358,9 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./src/secrets.js"></script>
     <script src="./src/main.js"></script>
+    <script src="./src/movies.js"></script>
+    <script src="./src/movie-preview.js"></script>
     <script src="./src/navigation.js"></script>
+    <script src="./src/series.js"></script>
   </body>
 </html>

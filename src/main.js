@@ -5,20 +5,24 @@ const api = axios.create({
         'Authorization': `Bearer ${API_KEY}`
     }
 });
-
-const URL_BASE = 'http://api.themoviedb.org/3';
 const URL_BASE_IMG = 'https://image.tmdb.org/t/p/w500/';
 const URL_BASE_IMG_2000 = 'https://image.tmdb.org/t/p/original';
 
 const URL_TRENDING = '/trending/all/day'
-
 const URL_MOVIE_POPULAR = '/movie/popular';
 const URL_TOP_RATED_MOVIES = '/movie/top_rated';
 const URL_UPCOMING_MOVIES = '/movie/upcoming';
+const URL_TOP_RATED_SERIES = '/tv/top_rated';
 
-const URL_CATEGORIES = URL_BASE + '/genre/movie/list'
+const URL_CATEGORIES = (mediaType) => `/genre/${mediaType}/list`;
 
-const URL_TOP_RATED_SERIES = URL_BASE + '/tv/top_rated';
+const containers = document.querySelectorAll('#homeBody .movie-cards');
+
+const homeTitles = ['Trending Now', 'top rated series', 'popular movies', 
+    'top rated movies', 'Upcoming movies']
+
+const URL_COMPLEMENTS = ['/trending/all/day', '/tv/top_rated', '/movie/popular', 
+    '/movie/top_rated', '/movie/upcoming', ]
 
 const create = (elemento) => document.createElement(elemento);
 
@@ -37,8 +41,10 @@ const create = (elemento) => document.createElement(elemento);
         movieImg.className = 'movie-img';
         if (movie.title === undefined) {
             movieImg.alt = movie.name;
+            movieImg.addEventListener('click', () => popupMoviePreview(movie.id, 'tv'))
         } else {
             movieImg.alt = movie.title;
+            movieImg.addEventListener('click', () => popupMoviePreview(movie.id, 'movie'))
         }
         movieImg.src = URL_BASE_IMG + movie.poster_path;
 
@@ -116,32 +122,32 @@ async function getMoviesPreview (URL, container, mediaNumber, sectionNumber) {
     console.log(movies)
     createMoviesCards(movies, container);
     
-    if (container === 'trending' && sectionNumber === 0) {
+    if (container === 'movie-cards1' && sectionNumber === 0) {
         const movieId = movies[mediaNumber].id;
         const mediaType = movies[mediaNumber].media_type;
         modifyMainPanel(movieId, mainPanel, mediaType);
         console.log(mediaType);
 
     }
-    if (container === 'top-rated-series' && sectionNumber === 1) {
+    if (container === 'movie-cards2' && sectionNumber === 1) {
         const movieId = movies[mediaNumber].id;
         const mediaType = 'tv';
         modifyMainPanel(movieId, mainPanel, mediaType);
         console.log(mediaType);
     }
-    if (container === 'popular-movies' && sectionNumber === 2) {
+    if (container === 'movie-cards3' && sectionNumber === 2) {
         const movieId = movies[mediaNumber].id;
         const mediaType = 'movie';
         modifyMainPanel(movieId, mainPanel, mediaType);
         console.log(mediaType);
     }
-    if (container === 'top-rated-movies' && sectionNumber === 3) {
+    if (container === 'movie-cards4' && sectionNumber === 3) {
         const movieId = movies[mediaNumber].id;
         const mediaType = 'movie';
         modifyMainPanel(movieId, mainPanel, mediaType);
         console.log(mediaType);
     }
-    if (container === 'upcoming-movies' && sectionNumber === 4) {
+    if (container === 'movie-cards5' && sectionNumber === 4) {
         const movieId = movies[mediaNumber].id;
         const mediaType = 'movie';
         modifyMainPanel(movieId, mainPanel, mediaType);
@@ -150,54 +156,24 @@ async function getMoviesPreview (URL, container, mediaNumber, sectionNumber) {
     
 }
 
-async function getCategoriesPreview() {
-    const res = await fetch(URL_CATEGORIES, {
-        method: 'GET',
-        headers: {
-            accept: 'application/json',
-            Authorization: 'Bearer ' + API_KEY
-        }
-    })
-
-    const data = await res.json();
-
-    const categories = data.genres;
-
-        categoriesContainer.innerHTML = '';
-
-        categories.forEach(category => {
-            const categoryButton = create('button');
-            categoryButton.id = 'c' + category.id;
-            categoryButton.textContent = category.name;
+function chargeHome() {
+    homeBody.style.display = 'flex';
+    mainPanel.style.display = 'flex'
+    categoriesBody.style.display = 'none';
+    searchBody.style.display = 'none';
     
-            categoriesContainer.appendChild(categoryButton);
+    const mediaRandomNumber = Math.floor(Math.random() * 20);
+    const sectionRandomNumber = Math.floor(Math.random() * 5);
+    console.log(mediaRandomNumber, sectionRandomNumber);
+
+        containers.forEach((container, index) => {
+            container.innerHTML = '';
+            const sectionTitle = document.getElementById(`title${index+1}`);
+            sectionTitle.textContent = homeTitles[index];
+
         })
 
-        location.hash = '#categories';
-
+        URL_COMPLEMENTS.forEach((url, index) => {
+            getMoviesPreview(url, `movie-cards${index+1}`, mediaRandomNumber, sectionRandomNumber);
+        })
 }
-
-async function chargeCategories(event) {
-    event.preventDefault;
-    categoriesBody.style.display = 'flex';
-    homeBody.style.display = 'none';
-    searchBody.style.display = 'none';
-    getCategoriesPreview();
-}
-
-// categoriesLink.addEventListener('click', chargeCategories);
-
-function mostrarPopup() {
-    const overlay = create('div');
-    overlay.className = 'popup-overlay';
-
-    moviePreview.style.display = 'block';
-    overlay.style.display = 'block';
-
-    document.body.appendChild(overlay);
-    overlay. addEventListener('click', function() {
-        popup.style.display = 'none';
-        overlay.remove();
-    });
-}
-//mostrarPopup();
