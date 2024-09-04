@@ -607,6 +607,10 @@ gap: 1rem;
   position: relative;
 }
 
+#searchBody {
+  padding-top: 2%;
+}
+
 .movie-scroll1 {
   display: flex;
   align-items: flex-start;
@@ -628,6 +632,14 @@ gap: 1rem;
   text-align: center;
   font-size: var(--body-text-size);
   position: relative;
+}
+
+#backButtonSearch {
+  height: 4%;
+  width: 4%;
+  position: absolute;
+  left: 4%;
+  z-index: 1000;
 }
 
 .movie-cards {
@@ -713,6 +725,9 @@ gap: 1rem;
   margin-bottom: 5vh;
 }
 
+#categoriesBody {
+  margin-bottom: 1%;
+}
 
 .categories-options {
   display: flex;

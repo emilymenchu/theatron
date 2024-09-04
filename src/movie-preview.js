@@ -15,15 +15,13 @@ function popupMoviePreview(movieId, mediaType) {
 
     pvSimilarContainer.innerHTML = '';
     modifyPreviewPanel(movieId, mediaType);
+    moviePreview.scroll(0,0);
 }
 
 
 async function modifyPreviewPanel (movieId, mediaType) {
    
     const { data } = await api(`/${mediaType}/${movieId}`);
-
-
-    console.log(data);
 
     if (mediaType === 'movie') {
         mpMainTitle.textContent = data.title;
@@ -64,10 +62,8 @@ async function modifyPreviewPanel (movieId, mediaType) {
 
 async function getSimilar(mediaType, mediaId) {
     const URL_SIMILAR = `/${mediaType}/${mediaId}/similar`;
-    console.log(URL_SIMILAR);
     const { data } = await api(URL_SIMILAR);
     const movies = data.results;
-    console.log(movies);
     createMoviesCards(movies, 'pvSimilarContainer');
 }
 

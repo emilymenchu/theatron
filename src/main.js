@@ -22,13 +22,15 @@ const homeTitles = ['Trending Now', 'top rated series', 'popular movies',
     'top rated movies', 'Upcoming movies']
 
 const URL_COMPLEMENTS = ['/trending/all/day', '/tv/top_rated', '/movie/popular', 
-    '/movie/top_rated', '/movie/upcoming', ]
+    '/movie/top_rated', '/movie/upcoming']
 
 const create = (elemento) => document.createElement(elemento);
 
 
  function createMoviesCards (movies, containerName) {
     const movieCardsContainer = document.getElementById(containerName);
+
+    movieCardsContainer.innerHTML = '';
 
      movies.forEach(movie => {
         const movieCard = create('div');
@@ -41,10 +43,10 @@ const create = (elemento) => document.createElement(elemento);
         movieImg.className = 'movie-img';
         if (movie.title === undefined) {
             movieImg.alt = movie.name;
-            movieImg.addEventListener('click', () => popupMoviePreview(movie.id, 'tv'))
+            movieImg.addEventListener('click', () => location.hash = `#preview/tv=${movie.id}`);
         } else {
             movieImg.alt = movie.title;
-            movieImg.addEventListener('click', () => popupMoviePreview(movie.id, 'movie'))
+            movieImg.addEventListener('click', () => location.hash = `#preview/movie=${movie.id}`);
         }
         movieImg.src = URL_BASE_IMG + movie.poster_path;
 
@@ -96,7 +98,6 @@ async function modifyMainPanel (movieId, panel, mediaType) {
     const { data } = await api(`/${mediaType}/${movieId}`);
 
 
-    console.log(data);
 
     if (mediaType === 'movie') {
         homeMainTitle.textContent = data.title;
@@ -119,61 +120,35 @@ async function getMoviesPreview (URL, container, mediaNumber, sectionNumber) {
     const { data } = await api(URL);
     
     const movies = data.results;
-    console.log(movies)
     createMoviesCards(movies, container);
     
     if (container === 'movie-cards1' && sectionNumber === 0) {
         const movieId = movies[mediaNumber].id;
         const mediaType = movies[mediaNumber].media_type;
         modifyMainPanel(movieId, mainPanel, mediaType);
-        console.log(mediaType);
 
     }
     if (container === 'movie-cards2' && sectionNumber === 1) {
         const movieId = movies[mediaNumber].id;
         const mediaType = 'tv';
         modifyMainPanel(movieId, mainPanel, mediaType);
-        console.log(mediaType);
     }
     if (container === 'movie-cards3' && sectionNumber === 2) {
         const movieId = movies[mediaNumber].id;
         const mediaType = 'movie';
         modifyMainPanel(movieId, mainPanel, mediaType);
-        console.log(mediaType);
     }
     if (container === 'movie-cards4' && sectionNumber === 3) {
         const movieId = movies[mediaNumber].id;
         const mediaType = 'movie';
         modifyMainPanel(movieId, mainPanel, mediaType);
-        console.log(mediaType);
     }
     if (container === 'movie-cards5' && sectionNumber === 4) {
         const movieId = movies[mediaNumber].id;
         const mediaType = 'movie';
         modifyMainPanel(movieId, mainPanel, mediaType);
-        console.log(mediaType);
     }
     
 }
 
-function chargeHome() {
-    homeBody.style.display = 'flex';
-    mainPanel.style.display = 'flex'
-    categoriesBody.style.display = 'none';
-    searchBody.style.display = 'none';
-    
-    const mediaRandomNumber = Math.floor(Math.random() * 20);
-    const sectionRandomNumber = Math.floor(Math.random() * 5);
-    console.log(mediaRandomNumber, sectionRandomNumber);
-
-        containers.forEach((container, index) => {
-            container.innerHTML = '';
-            const sectionTitle = document.getElementById(`title${index+1}`);
-            sectionTitle.textContent = homeTitles[index];
-
-        })
-
-        URL_COMPLEMENTS.forEach((url, index) => {
-            getMoviesPreview(url, `movie-cards${index+1}`, mediaRandomNumber, sectionRandomNumber);
-        })
-}
+titleLogo.addEventListener('click', () => location.hash = '#home');

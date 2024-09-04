@@ -15,23 +15,23 @@
     <header class="navbar">
       <div class="navbar-background">
         <div class="logo-search-bar-container">
-          <div class="logo-name-container">
+          <div id="titleLogo" class="logo-name-container">
             <div class="logo-container">
               <img class="logo" src="./public/platzi.png" alt="Platzi Logo">
             </div>
             <a class="platzi-movies">Platzi Movies</a>
           </div>
           <div class="search-background">
-            <input class="search-input" placeholder="Search" type="text" />
-            <button class="search-button">
+            <input id="searchInput" class="search-input" placeholder="Search" type="text" />
+            <button id="searchButton" class="search-button">
               <img class="search-icon" alt="" src="./public/search.svg" />
             </button>
           </div>
         </div>
         <div class="navbar-options">
           <a href="#home" id="homeLink" >Home</a>
-          <a href="#series" id="moviesLink" >Series</a>
-          <a href="#movies" id="categoriesLink">Movies</a>
+          <a href="#series-all" id="moviesLink" >Series</a>
+          <a href="#movies-all" id="categoriesLink">Movies</a>
           <a href="#mylist" id="myListLink">My List</a>
           <button class="user-icon-button">
             <img
@@ -188,10 +188,12 @@
         </section>
       </main>
     </div>
-
     
     <div id="searchBody" class="home">
-      
+      <button id="backButtonSearch"  class="back-button">
+        <img src="./public/arrow-back1.svg" alt="back-arrow">
+      </button> 
+
       <main class="movies">
         <section class="popular-movies-list">
           
@@ -228,6 +230,27 @@
                         </button>
                       </div>
                     </div> -->
+
+                  </div>
+                </div>
+              </div>  
+            </div>
+          </div>
+          
+        </section>
+      </main>
+    </div>
+    <div id="searchBody2" class="home">
+      
+      <main class="movies">
+        <section class="popular-movies-list">
+
+          <div class="movies-section">
+            <div class="section-container">
+              <h2 id="searchTitle2" class="section-title"></h2>
+              <div class="movie-scroll1">
+                <div class="cards-container1">
+                  <div id="searchCards2" class="movie-cards1">       
 
                   </div>
                 </div>
@@ -362,5 +385,6 @@
     <script src="./src/movie-preview.js"></script>
     <script src="./src/navigation.js"></script>
     <script src="./src/series.js"></script>
+    <script src="./src/search.js"></script>
   </body>
 </html>
