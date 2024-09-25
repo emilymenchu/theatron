@@ -16,6 +16,7 @@ backButton.addEventListener('click', () => {
     if( document.referrer.startsWith(window.location.origin)){
         window.history.back();
     } else {
+        console.log('hi')
         location.hash = '#home';
     }
 })

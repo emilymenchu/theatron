@@ -67,14 +67,15 @@ gap: 1rem;
   filter: grayscale(1) brightness(1) sepia(1) hue-rotate(200deg) saturate(1000%);
 }
 .platzi-movies {
+  display: flex;
   text-decoration: none;
-  width: 101px;
+  width: 130px;
   position: relative;
+  align-items: center;
   line-height: 27.5px;
   text-transform: uppercase;
   font-weight: 700;
   color: inherit;
-  display: inline-block;
   letter-spacing: 0.1rem;
   z-index: 1;
 }
