@@ -1,18 +1,32 @@
 const overlay = create('div');
 
+overlay.addEventListener('click', () => {
+    closePreview();
+    if (hashHistory.length > 1) {
+        console.log(previewCount)
+        hashHistory.splice(-previewCount);
+        location.hash = hashHistory[hashHistory.length - 1];
+        previewCount = 0;
+        console.log(previewCount)
+    } else {
+        location.hash = '#home';
+    }
+    console.log('popup overlay back button')
+});
+backButtonPopup.addEventListener('click', () => {
+    closePreview();
+    getBackInHistory();
+}); 
 
 function popupMoviePreview(movieId, mediaType) {
     overlay.className = 'popup-overlay';
 
-    document.body.classList.add('no-scroll')
+    document.body.classList.add('no-scroll');
 
     moviePreview.style.display = 'block';
     overlay.style.display = 'block';
 
     document.body.appendChild(overlay);
-    overlay.addEventListener('click', closePreview);
-    backButton.addEventListener('click', closePreview) 
-
     pvSimilarContainer.innerHTML = '';
     modifyPreviewPanel(movieId, mediaType);
     moviePreview.scroll(0,0);

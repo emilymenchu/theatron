@@ -1,25 +1,34 @@
+let hashHistory = [location.hash];
+console.log(hashHistory);
+
+let previousHashPreview = location.hash;
+let previewCount = 0;
+
+
 window.addEventListener('DOMContentLoaded', navigator, false);
 window.addEventListener('hashchange', navigator, false);
 
 searchButton.addEventListener('click', () => {
-    location.hash = '#search=' + searchInput.value;
+    if (searchInput.value != '') {
+        location.hash = '#search=' + searchInput.value;
+    }
 });
 
 backButtonSearch.addEventListener('click', () => {
-    if( document.referrer.startsWith(window.location.origin)){
-        window.history.back();
+    searchInput.value = '';
+    getBackInHistory();
+} );
+
+function getBackInHistory () {
+    if (hashHistory.length > 1) {
+        hashHistory.pop();
+        const previousHash = hashHistory[hashHistory.length - 1];
+        location.hash = previousHash;
     } else {
         location.hash = '#home';
     }
-});
-backButton.addEventListener('click', () => {
-    if( document.referrer.startsWith(window.location.origin)){
-        window.history.back();
-    } else {
-        console.log('hi')
-        location.hash = '#home';
-    }
-})
+
+}
 
 function navigator(){    
 
@@ -39,46 +48,30 @@ function navigator(){
         chargeSeriesByCategory(id, name);
     } else if (location.hash.startsWith('#preview/')) {
         const { mediaType, mediaId } = getDataFromHashPreview();
-
-    //     if (previousHash === undefined || mediaType === undefined || mediaId === undefined) {
-    //         console.log('Error while charging preview, it has to do with get Data form hash preview');
-    //     } else {
-
-    //         switch (true) {
-    //             case previousHash.startsWith('#movies-all'):
-    //                 chargeMoviesCategories(); 
-    //                 break;
-    //             case previousHash.startsWith('#movies-category='):
-    //                 const { id, name } = getCategoryFromHash('#movies-category=', previousHash);
-    //                 chargeMoviesByCategory(id, name);
-    //                 break;
-    //             case previousHash.startsWith('#series-all'):
-    //                 chargeSeriesCategories();
-    //                 break;
-    //             case previousHash.startsWith('#series-category='):
-    //                 const { id: id1, name: name1 } = getCategoryFromHash('#series-category=', previousHash);
-    //                 chargeSeriesByCategory(id1, name1);
-    //                 break;
-    //             case previousHash.startsWith('#search='):
-    //                 const [notImportant, query] = previousHash.split('=');
-    //                 const newQuery = decodeURI(query);
-    //                 chargeSearch(newQuery);
-    //                 break;
-    //             default:
-    //                 chargeHome();
-    //                 break;
-    //         }
-
-    //     popupMoviePreview(mediaId, mediaType);
-    // }
-    popupMoviePreview(mediaId, mediaType);
-
-
-    } else {
+        previewCount++;
+        popupMoviePreview(mediaId, mediaType);
+    } else if (location.hash.startsWith('#home')){
         chargeHome();
+    } else {
+        location.hash = '#home';
     }
 
-    smoothscroll();
+    if (!location.hash.startsWith('#preview/')){
+        previousHashPreview = location.hash;
+        smoothscroll();
+    }
+    
+    // previousHashAux = previousHash;
+    // previousHash = location.hash;
+    // console.log('2. ', previousHash, ' ', previousHashAux);
+
+    const currentHash = location.hash;
+
+    if (hashHistory[hashHistory.length - 1] !== currentHash) {
+        hashHistory.push(currentHash);
+    }
+    console.log(hashHistory);
+
 }
 
 
@@ -88,18 +81,28 @@ function chargeHome() {
     moviesBody.style.display = 'flex';
     categoriesBody.style.display = 'none';
     searchBody.style.display = 'none';
+    closePreview();
     
     const mediaRandomNumber = Math.floor(Math.random() * 20);
     const sectionRandomNumber = Math.floor(Math.random() * 5);
 
-        for (let index = 0; index < containers.length; index++) {
-            const sectionTitle = document.getElementById(`title${index+1}`);
-            sectionTitle.textContent = homeTitles[index];      
-        }
+    for (let index = 0; index < containers.length; index++) {
+        const sectionTitle = document.getElementById(`title${index+1}`);
+        sectionTitle.textContent = homeTitles[index];      
+    }
 
-        URL_COMPLEMENTS.forEach((url, index) => {
-            getMoviesPreview(url, `movie-cards${index+1}`, mediaRandomNumber, sectionRandomNumber);
-        });
+    URL_COMPLEMENTS.forEach((url, index) => {
+        getMoviesPreview(url, `movie-cards${index+1}`, mediaRandomNumber, sectionRandomNumber);
+    });
+    
+    // for (let index = 0; index < containers.length; index++) {
+    //     const sectionTitle = document.getElementById(`title${index+1}`);
+    //     sectionTitle.textContent = homeTitles[index];      
+    // }
+
+    // URL_COMPLEMENTS.forEach((url, index) => {
+    //     getMoviesPreview(url, `movie-cards${index+1}`, mediaRandomNumber, sectionRandomNumber);
+    // });
 }
 
 function chargeSearch(query) {
@@ -111,6 +114,7 @@ function chargeSearch(query) {
     backButtonSearch.style.display = 'flex';
     getMediaByQuery(query, 'movie');
     getMediaByQuery(query, 'tv');
+    closePreview();
 }
 
 function chargeMoviesCategories() {
@@ -121,6 +125,9 @@ function chargeMoviesCategories() {
     searchBody2.style.display = 'none';
     backButtonSearch.style.display = 'none';
     getMoviesCategoriesList();
+    closePreview();
+    searchInput.value = '';
+
 }
 
 function chargeMoviesByCategory(categoryId, categoryName) {
@@ -131,6 +138,8 @@ function chargeMoviesByCategory(categoryId, categoryName) {
     searchBody2.style.display = 'none';
     backButtonSearch.style.display = 'flex';
     getMoviesByCategory(categoryId, categoryName);
+    closePreview();
+    searchInput.value = '';
 }
 
 function chargeSeriesCategories() {
@@ -141,6 +150,8 @@ function chargeSeriesCategories() {
     searchBody2.style.display = 'none';
     backButtonSearch.style.display = 'none';
     getSeriesCategoriesList();
+    closePreview();
+    searchInput.value = '';
 }
 
 function chargeSeriesByCategory(categoryId, categoryName) {
@@ -151,10 +162,13 @@ function chargeSeriesByCategory(categoryId, categoryName) {
     backButtonSearch.style.display = 'flex';
     searchBody2.style.display = 'none';
     getSeriesByCategory(categoryId, categoryName);
+    closePreview();
+    searchInput.value = '';
 }
 
 function chargeMyList () {
-
+    closePreview();
+    searchInput.value = '';
 }
 
 function getCategoryFromHash(startOfHash, hash) {

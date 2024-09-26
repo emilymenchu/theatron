@@ -43,10 +43,14 @@ const create = (elemento) => document.createElement(elemento);
         movieImg.className = 'movie-img';
         if (movie.title === undefined) {
             movieImg.alt = movie.name;
-            movieImg.addEventListener('click', () => location.hash = `#preview/tv=${movie.id}`);
+            movieImg.addEventListener('click', () => {
+                location.hash = `#preview/tv=${movie.id}`;
+            });
         } else {
             movieImg.alt = movie.title;
-            movieImg.addEventListener('click', () => location.hash = `#preview/movie=${movie.id}`);
+            movieImg.addEventListener('click', () => {
+                location.hash = `#preview/movie=${movie.id}`;
+            });
         }
         movieImg.src = URL_BASE_IMG + movie.poster_path;
 
