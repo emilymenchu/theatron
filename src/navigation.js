@@ -91,10 +91,10 @@ function chargeHome() {
         sectionTitle.textContent = homeTitles[index];      
     }
 
-    URL_COMPLEMENTS.forEach((url, index) => {
-        getMoviesPreview(url, `movie-cards${index+1}`, mediaRandomNumber, sectionRandomNumber);
+    Array(4).fill('b').forEach((b, index) => {
+        loadMoviesSkeleton(`movie-cards${index+1}`);
     });
-    
+
     // for (let index = 0; index < containers.length; index++) {
     //     const sectionTitle = document.getElementById(`title${index+1}`);
     //     sectionTitle.textContent = homeTitles[index];      

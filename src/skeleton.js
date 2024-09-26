@@ -1,3 +1,8 @@
+function loadMoviesSkeleton (containerName) {
+     createMoviesCardsSkeleton(containerName)
+}
+
+
 function createMoviesCardsSkeleton (containerName) {
     const movieCardsContainer = document.getElementById(containerName);
 
