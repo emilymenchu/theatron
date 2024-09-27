@@ -10,6 +10,33 @@
     box-sizing: border-box;
 }
 
+.skeleton {
+    opacity: .3;
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+
+.skeleton-text {
+    width: 80%;
+    height: .7rem;
+    margin-bottom: .25rem;
+    border-radius: .125rem;
+}
+.skeleton-title {
+    width: 30%;
+    height: 1.5rem;
+    margin-bottom: .25rem;
+    border-radius: 1rem;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: hsl(239, 30%, 50%);
+    }
+    100% {
+        background-color: hsla(228, 91%, 87%, 0.744);
+    }
+}
+
 .skeleton-poster-container {
     height: 330px;
     width: 100%;

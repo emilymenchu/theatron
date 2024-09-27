@@ -88,6 +88,7 @@ function chargeHome() {
 
     for (let index = 0; index < containers.length; index++) {
         const sectionTitle = document.getElementById(`title${index+1}`);
+        sectionTitle.className = 'section-title';
         sectionTitle.textContent = homeTitles[index];      
     }
 
@@ -95,14 +96,14 @@ function chargeHome() {
         loadMoviesSkeleton(`movie-cards${index+1}`);
     });
 
-    // for (let index = 0; index < containers.length; index++) {
-    //     const sectionTitle = document.getElementById(`title${index+1}`);
-    //     sectionTitle.textContent = homeTitles[index];      
-    // }
+    for (let index = 0; index < containers.length; index++) {
+        const sectionTitle = document.getElementById(`title${index+1}`);
+        sectionTitle.textContent = homeTitles[index];      
+    }
 
-    // URL_COMPLEMENTS.forEach((url, index) => {
-    //     getMoviesPreview(url, `movie-cards${index+1}`, mediaRandomNumber, sectionRandomNumber);
-    // });
+    URL_COMPLEMENTS.forEach((url, index) => {
+        getMoviesPreview(url, `movie-cards${index+1}`, mediaRandomNumber, sectionRandomNumber);
+    });
 }
 
 function chargeSearch(query) {

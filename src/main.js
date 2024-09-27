@@ -37,10 +37,16 @@ const create = (elemento) => document.createElement(elemento);
         movieCard.className = 'movie-card';
 
         const posterContainer = create('div');
-        posterContainer.className = 'poster-container';
+        posterContainer.className = 'poster-container skeleton';
 
         const movieImg = create('img');
         movieImg.className = 'movie-img';
+        movieImg.style.display = 'none';
+        movieImg.onload = () => {
+            posterContainer.className = 'poster-container';
+            movieImg.style.display = 'block';
+        }
+
         if (movie.title === undefined) {
             movieImg.alt = movie.name;
             movieImg.addEventListener('click', () => {
@@ -98,59 +104,78 @@ const create = (elemento) => document.createElement(elemento);
 }
 
 async function modifyMainPanel (movieId, panel, mediaType) {
-   
-    const { data } = await api(`/${mediaType}/${movieId}`);
 
+    try {
+        
+        const { data } = await api(`/${mediaType}/${movieId}`); 
+        
+        if (mediaType === 'movie') {
+            homeMainTitle.textContent = data.title;
+            homeMovieReleaseDate.textContent = data.release_date;
+            homeMovieMediaType.textContent = 'Movie';
+        } else {
+            homeMainTitle.textContent = data.name;
+            homeMovieReleaseDate.textContent = data.first_air_date;
+            homeMovieMediaType.textContent = 'Series';
+        }
+        
+        homeMovieRating.textContent = data.vote_average.toFixed(1);
+        homeMovieDescription.textContent= data.overview;
 
+        const img = new Image();
+        img.src = `${URL_BASE_IMG_2000}${data.backdrop_path}`;
 
-    if (mediaType === 'movie') {
-        homeMainTitle.textContent = data.title;
-        homeMovieReleaseDate.textContent = data.release_date;
-        homeMovieMediaType.textContent = 'Movie';
-    } else {
-        homeMainTitle.textContent = data.name;
-        homeMovieReleaseDate.textContent = data.first_air_date;
-        homeMovieMediaType.textContent = 'Series';
+        img.onload = () => {
+            mainPanel.className = 'main-panel';
+            panel.style.background = 
+            `linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(${URL_BASE_IMG_2000}${data.backdrop_path}) top/cover no-repeat`;
+        }
+
+    } catch (e) {
+        console.log("Error Loading Movie: ", e);
     }
-
-    homeMovieRating.textContent = data.vote_average.toFixed(1);
-    homeMovieDescription.textContent= data.overview;
-    panel.style.background = 
-    `linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(${URL_BASE_IMG_2000}${data.backdrop_path}) top/cover no-repeat`;
 
 }
 
 async function getMoviesPreview (URL, container, mediaNumber, sectionNumber) {
-    const { data } = await api(URL);
-    
-    const movies = data.results;
-    createMoviesCards(movies, container);
-    
-    if (container === 'movie-cards1' && sectionNumber === 0) {
-        const movieId = movies[mediaNumber].id;
-        const mediaType = movies[mediaNumber].media_type;
-        modifyMainPanel(movieId, mainPanel, mediaType);
 
-    }
-    if (container === 'movie-cards2' && sectionNumber === 1) {
-        const movieId = movies[mediaNumber].id;
-        const mediaType = 'tv';
-        modifyMainPanel(movieId, mainPanel, mediaType);
-    }
-    if (container === 'movie-cards3' && sectionNumber === 2) {
-        const movieId = movies[mediaNumber].id;
-        const mediaType = 'movie';
-        modifyMainPanel(movieId, mainPanel, mediaType);
-    }
-    if (container === 'movie-cards4' && sectionNumber === 3) {
-        const movieId = movies[mediaNumber].id;
-        const mediaType = 'movie';
-        modifyMainPanel(movieId, mainPanel, mediaType);
-    }
-    if (container === 'movie-cards5' && sectionNumber === 4) {
-        const movieId = movies[mediaNumber].id;
-        const mediaType = 'movie';
-        modifyMainPanel(movieId, mainPanel, mediaType);
+    createMoviesCardsSkeleton(container);
+    mainPanel.className = 'main-panel skeleton';
+    try {
+        const { data } = await api(URL);
+        const movies = data.results;
+        createMoviesCards(movies, container);
+        
+        container.innerHTML = '';
+        
+        if (container === 'movie-cards1' && sectionNumber === 0) {
+            const movieId = movies[mediaNumber].id;
+            const mediaType = movies[mediaNumber].media_type;
+            modifyMainPanel(movieId, mainPanel, mediaType);
+            
+        }
+        if (container === 'movie-cards2' && sectionNumber === 1) {
+            const movieId = movies[mediaNumber].id;
+            const mediaType = 'tv';
+            modifyMainPanel(movieId, mainPanel, mediaType);
+        }
+        if (container === 'movie-cards3' && sectionNumber === 2) {
+            const movieId = movies[mediaNumber].id;
+            const mediaType = 'movie';
+            modifyMainPanel(movieId, mainPanel, mediaType);
+        }
+        if (container === 'movie-cards4' && sectionNumber === 3) {
+            const movieId = movies[mediaNumber].id;
+            const mediaType = 'movie';
+            modifyMainPanel(movieId, mainPanel, mediaType);
+        }
+        if (container === 'movie-cards5' && sectionNumber === 4) {
+            const movieId = movies[mediaNumber].id;
+            const mediaType = 'movie';
+            modifyMainPanel(movieId, mainPanel, mediaType);
+        }
+    } catch (e) {
+        console.error('Error Loading Movies: ', e)
     }
     
 }

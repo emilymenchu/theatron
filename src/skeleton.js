@@ -13,21 +13,22 @@ function createMoviesCardsSkeleton (containerName) {
         movieCard.className = 'skeleton-movie-card';
 
         const posterContainer = create('div');
-        posterContainer.className = 'skeleton-poster-container';
+        posterContainer.className = 'skeleton-poster-container skeleton';
 
         const saveButton = create('button');
-        saveButton.className = 'save-button';
+        saveButton.className = 'save-button skeleton';
 
         posterContainer.appendChild(saveButton);
 
         const movieTitleLike = create('div');
         movieTitleLike.className = 'movie-title-like';
 
+
         const movieTitle = create('p');
-        movieTitle.className = 'movie-title';
+        movieTitle.className = 'skeleton skeleton-text';
 
         const likeButton = create('button');
-        likeButton.className = 'like-button';
+        likeButton.className = 'like-button skeleton';
 
         movieTitleLike.appendChild(movieTitle);
         movieTitleLike.appendChild(likeButton);
