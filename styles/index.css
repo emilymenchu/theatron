@@ -449,7 +449,7 @@ gap: 1rem;
   align-items: center;
   height: 400px;
   width: 212px;
-  padding-bottom: 10px;
+  padding: 5px;
 }
 .movie-title-like {
   display: flex;
