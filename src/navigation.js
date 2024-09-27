@@ -86,23 +86,23 @@ function chargeHome() {
     const mediaRandomNumber = Math.floor(Math.random() * 20);
     const sectionRandomNumber = Math.floor(Math.random() * 5);
 
-    for (let index = 0; index < containers.length; index++) {
-        const sectionTitle = document.getElementById(`title${index+1}`);
-        sectionTitle.textContent = homeTitles[index];      
-    }
-
-    Array(4).fill('b').forEach((b, index) => {
-        loadMoviesSkeleton(`movie-cards${index+1}`);
-    });
-
     // for (let index = 0; index < containers.length; index++) {
     //     const sectionTitle = document.getElementById(`title${index+1}`);
     //     sectionTitle.textContent = homeTitles[index];      
     // }
 
-    // URL_COMPLEMENTS.forEach((url, index) => {
-    //     getMoviesPreview(url, `movie-cards${index+1}`, mediaRandomNumber, sectionRandomNumber);
+    // Array(5).fill('b').forEach((b, index) => {
+    //     loadMoviesSkeleton(`movie-cards${index+1}`);
     // });
+
+    for (let index = 0; index < containers.length; index++) {
+        const sectionTitle = document.getElementById(`title${index+1}`);
+        sectionTitle.textContent = homeTitles[index];      
+    }
+
+    URL_COMPLEMENTS.forEach((url, index) => {
+        getMoviesPreview(url, `movie-cards${index+1}`, mediaRandomNumber, sectionRandomNumber);
+    });
 }
 
 function chargeSearch(query) {

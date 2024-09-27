@@ -8,17 +8,16 @@ function createMoviesCardsSkeleton (containerName) {
 
     movieCardsContainer.innerHTML = '';
 
-     Array(20).fill('a').forEach(movie => {
+     Array(20).fill('a').forEach(a => {
         const movieCard = create('div');
-        movieCard.className = 'movie-card';
+        movieCard.className = 'skeleton-movie-card';
 
         const posterContainer = create('div');
-        posterContainer.className = 'poster-container';
+        posterContainer.className = 'skeleton-poster-container';
 
         const saveButton = create('button');
         saveButton.className = 'save-button';
 
-        saveButton.appendChild(saveIcon);
         posterContainer.appendChild(saveButton);
 
         const movieTitleLike = create('div');
@@ -26,21 +25,9 @@ function createMoviesCardsSkeleton (containerName) {
 
         const movieTitle = create('p');
         movieTitle.className = 'movie-title';
-        if (movie.title === undefined) {
-            movieTitle.textContent = movie.name;
-        } else {
-            movieTitle.textContent = movie.title;
-        }
 
         const likeButton = create('button');
         likeButton.className = 'like-button';
-
-        const likeIcon = create('img');
-        likeIcon.className = 'like-icon';
-        likeIcon.alt = 'like';
-        likeIcon.src = './public/likeIcon.svg';
-
-        likeButton.appendChild(likeIcon);
 
         movieTitleLike.appendChild(movieTitle);
         movieTitleLike.appendChild(likeButton);
