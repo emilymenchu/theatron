@@ -35,7 +35,7 @@ function navigator(){
     if (location.hash.startsWith('#search=')){
         const [notImportant, query] = location.hash.split('=');
         const newQuery = decodeURI(query);
-        chargeSearch(newQuery);
+        chargeSearchPage(newQuery);
     } else if (location.hash.startsWith('#movies-all')){
         chargeMoviesCategories();
     } else if (location.hash.startsWith('#movies-category=')) {
@@ -81,6 +81,8 @@ function chargeHome() {
     moviesBody.style.display = 'flex';
     categoriesBody.style.display = 'none';
     searchBody.style.display = 'none';
+    searchInput.value = '';
+
     closePreview();
     
     const mediaRandomNumber = Math.floor(Math.random() * 20);
@@ -106,16 +108,8 @@ function chargeHome() {
     });
 }
 
-function chargeSearch(query) {
-    mainPanel.style.display = 'none';
-    categoriesBody.style.display = 'none';
-    moviesBody.style.display = 'none';
-    searchBody.style.display = 'flex';
-    searchBody2.style.display = 'flex';
-    backButtonSearch.style.display = 'flex';
-    getMediaByQuery(query, 'movie');
-    getMediaByQuery(query, 'tv');
-    closePreview();
+function chargeSearchPage(query) {
+    chargeSearch(query)
 }
 
 function chargeMoviesCategories() {

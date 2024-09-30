@@ -1,11 +1,25 @@
 const seriesCategoriesId = [];
 
 async function getSeriesCategoriesList() {
-    const { data } = await api(URL_CATEGORIES('tv'));
-    
-    const categories = data.genres;
-        categoriesContainer.innerHTML = '';
+    categoriesContainer.innerHTML = '';
+    Array(20).fill(0).forEach(o => {
+        const categoryButtonSkeleton = create('div');
+        categoryButtonSkeleton.classList.add('skeleton')
+        categoriesContainer.appendChild(categoryButtonSkeleton);
+    })
 
+    containers.forEach((container, index) =>  {
+        const sectionTitle = document.getElementById(`title${index+1}`);
+        sectionTitle.className = 'skeleton skeleton-title';
+        createMoviesCardsSkeleton(`movie-cards${index+1}`);        
+    });
+
+    try {
+        const { data } = await api(URL_CATEGORIES('tv'));
+        
+        const categories = data.genres;
+        categoriesContainer.innerHTML = '';
+        
         categories.forEach(category => {
             const categoryButton = create('button');
             categoryButton.id = 'c' + category.id;
@@ -17,14 +31,18 @@ async function getSeriesCategoriesList() {
             
             categoriesContainer.appendChild(categoryButton);
         });
-
+        
         const ids = getRandom5Ids(seriesCategoriesId);
-
+        
         ids.forEach((id, index) => {
             const sectionTitle = document.getElementById(`title${index+1}`);
+            sectionTitle.className = 'section-title';
             sectionTitle.textContent = findCategoryById(categories, id).name;
             getSeriesCategoriesPreview(id, `movie-cards${index+1}`);
         });       
+    } catch (e) {
+        console.error("Error getting series: " + e);
+    }
         
 }
 async function getSeriesCategoriesPreview(categoryId, containerId){

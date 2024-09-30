@@ -735,6 +735,7 @@ gap: 1rem;
   margin-top: 10vh;
 }
 
+.categories-options div,
 .categories-options button {
   width: 10vw;
   height: 5vh;

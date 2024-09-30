@@ -22,9 +22,20 @@ const homeTitles = ['Trending Now', 'top rated series', 'popular movies',
     'top rated movies', 'Upcoming movies']
 
 const URL_COMPLEMENTS = ['/trending/all/day', '/tv/top_rated', '/movie/popular', 
-    '/movie/top_rated', '/movie/upcoming']
+    '/movie/top_rated', '/movie/upcoming'];
 
 const create = (elemento) => document.createElement(elemento);
+
+// let observer = new IntersectionObserver(handleIntersect);
+// observer.observe();
+
+// function handleIntersect (entries) {
+//     entries.forEach(entry => {
+//         if (entry.isIntersecting) {
+
+//         }
+//     })
+// }
 
 
  function createMoviesCards (movies, containerName) {
@@ -58,7 +69,7 @@ const create = (elemento) => document.createElement(elemento);
                 location.hash = `#preview/movie=${movie.id}`;
             });
         }
-        movieImg.src = URL_BASE_IMG + movie.poster_path;
+        movieImg.setAttribute('data-img', URL_BASE_IMG + movie.poster_path);
 
         const saveButton = create('button');
         saveButton.className = 'save-button';
@@ -70,6 +81,7 @@ const create = (elemento) => document.createElement(elemento);
 
         saveButton.appendChild(saveIcon);
         posterContainer.appendChild(movieImg);
+        observer.observe(movieImg);
         posterContainer.appendChild(saveButton);
 
         const movieTitleLike = create('div');
@@ -104,7 +116,8 @@ const create = (elemento) => document.createElement(elemento);
 }
 
 async function modifyMainPanel (movieId, panel, mediaType) {
-
+    mainPanel.className = 'main-panel skeleton';
+    panel.style.background = 'none';
     try {
         
         const { data } = await api(`/${mediaType}/${movieId}`); 

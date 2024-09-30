@@ -4,6 +4,7 @@ function loadMoviesSkeleton (containerName) {
 
 
 function createMoviesCardsSkeleton (containerName) {
+
     const movieCardsContainer = document.getElementById(containerName);
 
     movieCardsContainer.innerHTML = '';

@@ -3,7 +3,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 100%;
+    /* height: 100%; */
     width: 222px;
     flex-shrink: 0;
     min-width: 222px;    /* Asegura que no se reduzcan por debajo de este ancho */
