@@ -362,16 +362,16 @@ gap: 1rem;
   background-color: black;
   gap: 412px;
 }
-
+/* 
 .main-movie-img-container{
-  margin-left: 30%;
+  margin-left: 20%;
   display: flex;
-  width: 70%;
+  width: 80%;
   height: 100%;
   position: absolute;
-  /* background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
-    url(../public/image-9@2x.png) center/cover no-repeat; */
-}
+  background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
+  url(../public/image-9@2x.png) center/cover no-repeat; 
+} */
 .user-panel {
   position: absolute;
   display: flex;
@@ -672,6 +672,7 @@ gap: 1rem;
   bottom: 0;
   overflow: hidden;
   border-radius: var(--br-3xs);
+  cursor: pointer;
 }
 .movie-img {
   display: block;
@@ -680,6 +681,23 @@ gap: 1rem;
   left: 0;
   width: 100%;
   cursor: pointer;
+ }
+
+ .movie-title-alt-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+ }
+
+ .movie-title-alt {
+  padding: 0;
+  text-transform: uppercase;
+  font-size: large;
+ }
+
+ .alt-icon {
+    height: 100px;
  }
 
 .footer-child {
@@ -753,87 +771,107 @@ gap: 1rem;
 .categories-options button:active {
   border: var(--color-white) solid;
 }
-
-#c14{
-  background-color: rgb(15, 137, 161);
-}
-#c16{
-  background-color: rgb(176, 199, 236);
-}
-#c18{
-  background-color: rgb(175, 144, 201);
-}
-
-#c27 {
-  background-color: rgba(183, 70, 70, 0.257);
-}
-#c28 {
-  background-color: var(--color-orange);
-}
-#c35 {
-  background-color: var(--color-yellow);
-}
-#c36 {
-  background-color: rgb(108, 61, 43);
-}
-#c37 {
-  background-color: rgb(121, 11, 11);
-}
-
-#c99 {
-  background-color: var(--color-blue);
-}
-
-#c53 {
-  background-color: rgb(150, 14, 91);
-}
-
-#c80 {
-  background-color: var(--color-dark-red);
-}
-
+.c12,
 #c12 {
   background-color: var(--color-green);
 }
+.c14,
+#c14{
+  background-color: rgb(15, 137, 161);
+}
+.c16,
+#c16{
+  background-color: rgb(176, 199, 236);
+}
+.c18,
+#c18{
+  background-color: rgb(175, 144, 201);
+}
+.c27,
+#c27 {
+  background-color: rgba(183, 70, 70, 0.257);
+}
+.c28,
+#c28 {
+  background-color: var(--color-orange);
+}
+.c35,
+#c35 {
+  background-color: var(--color-yellow);
+}
+.c36,
+#c36 {
+  background-color: rgb(108, 61, 43);
+}
+.c37,
+#c37 {
+  background-color: rgb(121, 11, 11);
+}
+.c53,
+#c53 {
+  background-color: rgb(150, 14, 91);
+}
+.c80,
+#c80 {
+  background-color: var(--color-dark-red);
+}
+.c99,
+#c99 {
+  background-color: var(--color-blue);
+}
+.c10762,
+.c878,
 #c10762,
 #c878 {
   background-color: rgb(1, 71, 248);
 }
-
+.c9648,
 #c9648 {
   background-color: rgb(50, 14, 150);
 }
+.c10402,
 #c10402 {
   background-color: rgb(14, 94, 150);
 }
+.c10749,
 #c10749 {
   background-color: var(--color-purple);
 }
+.c10751,
 #c10751 {
   background-color: rgb(144, 177, 201);
 }
+.c10752,
+.c10759,
 #c10759,
 #c10752 {
   background-color: rgb(238, 161, 37);
 }
+.c10763,
 #c10763 {
   background-color: #de1212;
 }
+.c10764,
 #c10764 {
   background-color: #d77608e9;
 }
+.c10765,
 #c10765 {
   background-color: #2224ae;
 }
+.c10766,
 #c10766 {
   background-color: #54b3b3;
 }
+.c10767,
 #c10767 {
   background-color: #cbb916;
 }
+.c10768,
 #c10768 {
   background-color: #192877;
 }
+.c10770,
 #c10770 {
   background-color: rgb(12, 95, 26);
 }

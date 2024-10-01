@@ -3,10 +3,9 @@ const overlay = create('div');
 overlay.addEventListener('click', () => {
     closePreview();
     if (hashHistory.length > 1) {
-        console.log(previewCount)
+        console.log(previewCount);
         hashHistory.splice(-previewCount);
         location.hash = hashHistory[hashHistory.length - 1];
-        previewCount = 0;
         console.log(previewCount)
     } else {
         location.hash = '#home';
@@ -35,6 +34,8 @@ function popupMoviePreview(movieId, mediaType) {
 
 
 async function modifyPreviewPanel (movieId, mediaType) {
+    mpPanel.style.display = 'block';
+    mpMainPanel.style.background = 'black';
     mpMainPanel.className = 'main-panel skeleton';
     mpPanel.style.background = 'none';
 
@@ -55,6 +56,8 @@ async function modifyPreviewPanel (movieId, mediaType) {
     
     try {
         const { data } = await api(`/${mediaType}/${movieId}`);
+
+        console.log(data)
         
         mpMainPanel.classList.remove = 'skeleton';
         mpMainTitle.classList.remove = 'skeleton skeleton-title'
@@ -98,6 +101,22 @@ async function modifyPreviewPanel (movieId, mediaType) {
             `linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(${URL_BASE_IMG_2000}${data.backdrop_path}) center/cover no-repeat`;
         }
         
+        img.addEventListener('error', () => {
+            mpPanel.style.display = 'none'
+            mpMainPanel.className = 'main-panel'
+            const movieTitleAltContainer = create('div');
+            movieTitleAltContainer.className = 'movie-title-alt-container';
+            const altIcon = create('img');
+            altIcon.className = "alt-icon"
+            altIcon.alt = 'icon';
+            altIcon.src = './public/movie.svg'
+            movieTitleAltContainer.appendChild(altIcon);
+            mpMainPanel.appendChild(movieTitleAltContainer);
+
+            mpMainPanel.style.background = 'var(--color-cornflower-default)';
+            
+        });
+
         const categories = data.genres;
         
         categories.forEach(category => {

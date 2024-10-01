@@ -58,6 +58,7 @@ function navigator(){
 
     if (!location.hash.startsWith('#preview/')){
         previousHashPreview = location.hash;
+        previewCount = 0;
         smoothscroll();
     }
     

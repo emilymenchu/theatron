@@ -43,81 +43,115 @@ const create = (elemento) => document.createElement(elemento);
 
     movieCardsContainer.innerHTML = '';
 
-     movies.forEach(movie => {
-        const movieCard = create('div');
-        movieCard.className = 'movie-card';
+    if (movies.length === 0) {
+        similarMoviesSection.style.display = 'none';
+    } else {
 
-        const posterContainer = create('div');
-        posterContainer.className = 'poster-container skeleton';
-
-        const movieImg = create('img');
-        movieImg.className = 'movie-img';
-        movieImg.style.display = 'none';
-        movieImg.onload = () => {
-            posterContainer.className = 'poster-container';
-            movieImg.style.display = 'block';
-        }
-
-        if (movie.title === undefined) {
-            movieImg.alt = movie.name;
-            movieImg.addEventListener('click', () => {
-                location.hash = `#preview/tv=${movie.id}`;
+        
+        movies.forEach(movie => {
+            const movieCard = create('div');
+            movieCard.className = 'movie-card';
+            
+            const posterContainer = create('div');
+            posterContainer.className = 'poster-container skeleton';
+            
+            const movieImg = create('img');
+            movieImg.className = 'movie-img';
+            movieImg.style.opacity = '0';
+            movieImg.onload = () => {
+                posterContainer.className = 'poster-container';
+                movieImg.style.opacity = '1';
+                
+            }
+            
+            if (movie.title === undefined) {
+                movieImg.alt = movie.name;
+                posterContainer.addEventListener('click', () => {
+                    location.hash = `#preview/tv=${movie.id}`;
+                });
+            } else {
+                movieImg.alt = movie.title;
+                posterContainer.addEventListener('click', () => {
+                    location.hash = `#preview/movie=${movie.id}`;
+                });
+            }
+            movieImg.setAttribute('data-img', URL_BASE_IMG + movie.poster_path);
+            posterContainer.appendChild(movieImg);
+            
+            movieImg.addEventListener('error', () => {
+                movieImg.style.display = "none";
+                const movieTitleAltContainer = create('div');
+                movieTitleAltContainer.className = 'movie-title-alt-container';
+                const movieTitleAlt = create('p');
+                movieTitleAlt.textContent = movieImg.getAttribute('alt');
+                movieTitleAlt.className = 'movie-title-alt';
+                const altIcon = create('img');
+                altIcon.className = "alt-icon"
+                altIcon.alt = 'icon';
+                altIcon.src = './public/movie.svg'
+                movieTitleAltContainer.appendChild(altIcon);
+                movieTitleAltContainer.appendChild(movieTitleAlt);
+                posterContainer.appendChild(movieTitleAltContainer);
+                
+                movieImg.style.opacity = '0';
+                if (movie.genre_ids.length === 0) {
+                    posterContainer.style.background = 'var(--color-cornflower-default)';
+                    posterContainer.className = 'poster-container';
+                } else {
+                    posterContainer.className = `poster-container c${movie.genre_ids[0]}`;
+                }
             });
-        } else {
-            movieImg.alt = movie.title;
-            movieImg.addEventListener('click', () => {
-                location.hash = `#preview/movie=${movie.id}`;
-            });
-        }
-        movieImg.setAttribute('data-img', URL_BASE_IMG + movie.poster_path);
-
-        const saveButton = create('button');
-        saveButton.className = 'save-button';
-
-        const saveIcon = create('img');
-        saveIcon.className = 'save-icon';
-        saveIcon.alt = 'save';
-        saveIcon.src = './public/saveIcon.svg';
-
-        saveButton.appendChild(saveIcon);
-        posterContainer.appendChild(movieImg);
-        observer.observe(movieImg);
-        posterContainer.appendChild(saveButton);
-
-        const movieTitleLike = create('div');
-        movieTitleLike.className = 'movie-title-like';
-
-        const movieTitle = create('p');
-        movieTitle.className = 'movie-title';
-        if (movie.title === undefined) {
-            movieTitle.textContent = movie.name;
-        } else {
-            movieTitle.textContent = movie.title;
-        }
-
-        const likeButton = create('button');
-        likeButton.className = 'like-button';
-
-        const likeIcon = create('img');
-        likeIcon.className = 'like-icon';
-        likeIcon.alt = 'like';
-        likeIcon.src = './public/likeIcon.svg';
-
-        likeButton.appendChild(likeIcon);
-
-        movieTitleLike.appendChild(movieTitle);
-        movieTitleLike.appendChild(likeButton);
-
-        movieCard.appendChild(posterContainer);
-        movieCard.appendChild(movieTitleLike);
-      
-        movieCardsContainer.appendChild(movieCard);
-    });
+            
+            const saveButton = create('button');
+            saveButton.className = 'save-button';
+            
+            saveButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+            })
+            
+            const saveIcon = create('img');
+            saveIcon.className = 'save-icon';
+            saveIcon.alt = 'save';
+            saveIcon.src = './public/saveIcon.svg';
+            
+            saveButton.appendChild(saveIcon);
+            observer.observe(movieImg);
+            posterContainer.appendChild(saveButton);
+            
+            const movieTitleLike = create('div');
+            movieTitleLike.className = 'movie-title-like';
+            
+            const movieTitle = create('p');
+            movieTitle.className = 'movie-title';
+            if (movie.title === undefined) {
+                movieTitle.textContent = movie.name;
+            } else {
+                movieTitle.textContent = movie.title;
+            }
+            
+            const likeButton = create('button');
+            likeButton.className = 'like-button';
+            
+            const likeIcon = create('img');
+            likeIcon.className = 'like-icon';
+            likeIcon.alt = 'like';
+            likeIcon.src = './public/likeIcon.svg';
+            
+            likeButton.appendChild(likeIcon);
+            
+            movieTitleLike.appendChild(movieTitle);
+            movieTitleLike.appendChild(likeButton);
+            
+            movieCard.appendChild(posterContainer);
+            movieCard.appendChild(movieTitleLike);
+            
+            movieCardsContainer.appendChild(movieCard);
+        });
+    }
 }
 
 async function modifyMainPanel (movieId, panel, mediaType) {
     mainPanel.className = 'main-panel skeleton';
-    panel.style.background = 'none';
     try {
         
         const { data } = await api(`/${mediaType}/${movieId}`); 
@@ -143,6 +177,22 @@ async function modifyMainPanel (movieId, panel, mediaType) {
             panel.style.background = 
             `linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(${URL_BASE_IMG_2000}${data.backdrop_path}) top/cover no-repeat`;
         }
+
+        img.addEventListener('error', () => {
+            console.log('error');
+            mainPanel.className = 'main-panel'
+            const movieTitleAltContainer = create('div');
+            movieTitleAltContainer.className = 'movie-title-alt-container';
+            const altIcon = create('img');
+            altIcon.className = "alt-icon"
+            altIcon.alt = 'icon';
+            altIcon.src = './public/movie.svg'
+            movieTitleAltContainer.appendChild(altIcon);
+            mainPanel.appendChild(movieTitleAltContainer);
+
+            mainPanel.style.background = 'black';
+            
+        });
 
     } catch (e) {
         console.log("Error Loading Movie: ", e);
