@@ -684,6 +684,14 @@ gap: 1rem;
  }
 
  .movie-title-alt-container {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+ }
+
+ .imgAlternativeContainer {
   position: absolute;
   top: 50%;
   left: 50%;

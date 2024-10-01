@@ -80,8 +80,8 @@ const create = (elemento) => document.createElement(elemento);
             
             movieImg.addEventListener('error', () => {
                 movieImg.style.display = "none";
-                const movieTitleAltContainer = create('div');
-                movieTitleAltContainer.className = 'movie-title-alt-container';
+                const imgAlternativeContainer = create('div');
+                imgAlternativeContainer.className = 'imgAlternativeContainer';
                 const movieTitleAlt = create('p');
                 movieTitleAlt.textContent = movieImg.getAttribute('alt');
                 movieTitleAlt.className = 'movie-title-alt';
@@ -89,9 +89,9 @@ const create = (elemento) => document.createElement(elemento);
                 altIcon.className = "alt-icon"
                 altIcon.alt = 'icon';
                 altIcon.src = './public/movie.svg'
-                movieTitleAltContainer.appendChild(altIcon);
-                movieTitleAltContainer.appendChild(movieTitleAlt);
-                posterContainer.appendChild(movieTitleAltContainer);
+                imgAlternativeContainer.appendChild(altIcon);
+                imgAlternativeContainer.appendChild(movieTitleAlt);
+                posterContainer.appendChild(imgAlternativeContainer);
                 
                 movieImg.style.opacity = '0';
                 if (movie.genre_ids.length === 0) {
@@ -152,6 +152,7 @@ const create = (elemento) => document.createElement(elemento);
 
 async function modifyMainPanel (movieId, panel, mediaType) {
     mainPanel.className = 'main-panel skeleton';
+    movieTitleAltContainer.style.display = 'none';
     try {
         
         const { data } = await api(`/${mediaType}/${movieId}`); 
@@ -181,15 +182,8 @@ async function modifyMainPanel (movieId, panel, mediaType) {
         img.addEventListener('error', () => {
             console.log('error');
             mainPanel.className = 'main-panel'
-            const movieTitleAltContainer = create('div');
-            movieTitleAltContainer.className = 'movie-title-alt-container';
-            const altIcon = create('img');
-            altIcon.className = "alt-icon"
-            altIcon.alt = 'icon';
-            altIcon.src = './public/movie.svg'
             movieTitleAltContainer.appendChild(altIcon);
-            mainPanel.appendChild(movieTitleAltContainer);
-
+            movieTitleAltContainer.style.display = 'block';
             mainPanel.style.background = 'black';
             
         });
@@ -204,6 +198,7 @@ async function getMoviesPreview (URL, container, mediaNumber, sectionNumber) {
 
     createMoviesCardsSkeleton(container);
     mainPanel.className = 'main-panel skeleton';
+
     try {
         const { data } = await api(URL);
         const movies = data.results;

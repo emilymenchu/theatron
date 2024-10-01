@@ -37,6 +37,7 @@ async function modifyPreviewPanel (movieId, mediaType) {
     mpPanel.style.display = 'block';
     mpMainPanel.style.background = 'black';
     mpMainPanel.className = 'main-panel skeleton';
+    mpMovieTitleAltContainer.style.display = 'none';
     mpPanel.style.background = 'none';
 
     mpMainTitle.classList.add = 'skeleton skeleton-title';
@@ -101,18 +102,11 @@ async function modifyPreviewPanel (movieId, mediaType) {
             `linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(${URL_BASE_IMG_2000}${data.backdrop_path}) center/cover no-repeat`;
         }
         
+
         img.addEventListener('error', () => {
             mpPanel.style.display = 'none'
             mpMainPanel.className = 'main-panel'
-            const movieTitleAltContainer = create('div');
-            movieTitleAltContainer.className = 'movie-title-alt-container';
-            const altIcon = create('img');
-            altIcon.className = "alt-icon"
-            altIcon.alt = 'icon';
-            altIcon.src = './public/movie.svg'
-            movieTitleAltContainer.appendChild(altIcon);
-            mpMainPanel.appendChild(movieTitleAltContainer);
-
+            mpMovieTitleAltContainer.style.display = 'block';
             mpMainPanel.style.background = 'var(--color-cornflower-default)';
             
         });
