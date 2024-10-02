@@ -238,4 +238,41 @@ async function getMoviesPreview (URL, container, mediaNumber, sectionNumber) {
     
 }
 
+
+function chargeHome() {
+    homeBody.style.display = 'flex';
+    mainPanel.style.display = 'flex';
+    moviesBody.style.display = 'flex';
+    categoriesBody.style.display = 'none';
+    searchBody.style.display = 'none';
+    searchInput.value = '';
+
+    closePreview();
+    
+    const mediaRandomNumber = Math.floor(Math.random() * 20);
+    const sectionRandomNumber = Math.floor(Math.random() * 5);
+
+
+    for (let index = 0; index < containers.length; index++) {
+
+        const sectionTitle = document.getElementById(`title${index+1}`);
+        sectionTitle.className = 'section-title';
+        sectionTitle.textContent = homeTitles[index];    
+        
+    }
+
+    Array(5).fill('b').forEach((b, index) => {
+        loadMoviesSkeleton(`movie-cards${index+1}`);
+    });
+
+    for (let index = 0; index < containers.length; index++) {
+        const sectionTitle = document.getElementById(`title${index+1}`);
+        sectionTitle.textContent = homeTitles[index];      
+    }
+
+    URL_COMPLEMENTS.forEach((url, index) => {
+        getMoviesPreview(url, `movie-cards${index+1}`, mediaRandomNumber, sectionRandomNumber);
+    });
+}
+
 titleLogo.addEventListener('click', () => location.hash = '#home');
