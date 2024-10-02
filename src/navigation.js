@@ -44,7 +44,7 @@ function navigator(){
     } else if (location.hash.startsWith('#series-all')){
         chargeSeriesCategories();
     } else if (location.hash.startsWith('#series-category=')) {
-        const { id, name } = getCategoryFromHash('#series-category=');
+        const { id, name } = getCategoryFromHash('#series-category=', location.hash);
         chargeSeriesByCategory(id, name);
     } else if (location.hash.startsWith('#preview/')) {
         const { mediaType, mediaId } = getDataFromHashPreview();
