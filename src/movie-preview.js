@@ -132,7 +132,7 @@ async function getSimilar(mediaType, mediaId) {
         const URL_SIMILAR = `/${mediaType}/${mediaId}/similar`;
         const { data } = await api(URL_SIMILAR);
         const movies = data.results;
-        pvSimilarContainer.innerHTML = '';
+        cleanContainer('pvSimilarContainer');
         createMoviesCards(movies, 'pvSimilarContainer');
     
     } catch (e) {

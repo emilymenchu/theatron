@@ -3,6 +3,9 @@ const api = axios.create({
     headers: {
         'Content-Type': 'application/json;charset=utf-8',
         'Authorization': `Bearer ${API_KEY}`
+    },
+    params: {
+        "language": 'ko'
     }
 });
 const URL_BASE_IMG = 'https://image.tmdb.org/t/p/w500/';
@@ -37,11 +40,94 @@ const create = (elemento) => document.createElement(elemento);
 //     })
 // }
 
+const languages = {
+    english: {
+        name: 'English',
+        code: 'en',
+        flag: "🇬🇧"
+    },
+    spanish: {
+        name: 'Español',
+        code: 'es',
+        flag: "🇪🇸"
+    },
+    french: {
+        name: 'Français',
+        code: 'fr',
+        flag: "🇫🇷"
+    },
+    japanese: {
+        name: '日本語 (Nihongo)',
+        code: 'ja',
+        flag: "🇯🇵"
+    },
+    korean: {
+        name: '한국어 (Hangugeo)',
+        code: 'ko',
+        flag: "🇰🇷"
+    },
+    chinese: {
+        name: '中文 (Zhōngwén)',
+        code: 'zh',
+        flag: "🇨🇳"
+    },
+    portuguese: {
+        name: 'Português',
+        code: 'pt',
+        flag: "🇵🇹"
+    },
+    italian: {
+        name: 'Italiano',
+        code: 'it',
+        flag: "🇮🇹"
+    },
+    russian: {
+        name: 'Русский (Russkiy)',
+        code: 'ru',
+        flag: "🇷🇺"
+    },
+    german: {
+        name: 'Deutsch',
+        code: 'de',
+        flag: "🇩🇪"
+    }
+}
+
+function languageMenu () {
+    const languagesContainer = create('div');
+
+    const languageMenu = create('div');
+
+    Object.values(languages).forEach(language => {
+        const container = create('span');
+        container.textContent = language.name + ` (${language.code}) ` + language.flag;
+        languageMenu.appendChild(container);
+    })
+
+    languagesContainer.appendChild(languageMenu)
+
+    navOptions.appendChild(languagesContainer);
+
+}
+
+languageMenu();
 
  function createMoviesCards (movies, containerName) {
     const movieCardsContainer = document.getElementById(containerName);
 
-    movieCardsContainer.innerHTML = '';
+    // movieCardsContainer.innerHTML = '';
+    const lists = {
+        movieWatchList: JSON.parse(localStorage.getItem(listsName[0])),
+        seriesWatchList: JSON.parse(localStorage.getItem(listsName[1])),
+        favoriteMovies: JSON.parse(localStorage.getItem(listsName[2])),
+        favoriteSeries: JSON.parse(localStorage.getItem(listsName[3]))
+    };
+
+    listsName.forEach(listName => {
+        const list = JSON.parse(localStorage.getItem(listName));
+        
+    })
+
 
     if (movies.length === 0) {
         similarMoviesSection.style.display = 'none';
@@ -94,7 +180,7 @@ const create = (elemento) => document.createElement(elemento);
                 posterContainer.appendChild(imgAlternativeContainer);
                 
                 movieImg.style.opacity = '0';
-                if (movie.genre_ids.length === 0) {
+                if (movie.genre_ids === undefined || movie.genre_ids.length === 0) {
                     posterContainer.style.background = 'var(--color-cornflower-default)';
                     posterContainer.className = 'poster-container';
                 } else {
@@ -105,15 +191,27 @@ const create = (elemento) => document.createElement(elemento);
             const saveButton = create('button');
             saveButton.className = 'save-button';
             
-            saveButton.addEventListener('click', (event) => {
-                event.stopPropagation();
-            })
             
             const saveIcon = create('img');
             saveIcon.className = 'save-icon';
             saveIcon.alt = 'save';
             saveIcon.src = './public/saveIcon.svg';
+            if (movie.title === undefined) {
+                setButtonSrc(movie.id, lists.seriesWatchList, saveIcon, buttonTypes.save);
+            } else {
+                setButtonSrc(movie.id, lists.movieWatchList, saveIcon, buttonTypes.save);
+            }
+
             
+            saveButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                if (movie.title === undefined) {
+                    addOrRemoveMedia(movie, listsName[1], saveIcon, buttonTypes.save);
+                } else {
+                    addOrRemoveMedia(movie, listsName[0], saveIcon, buttonTypes.save);
+                }
+            })
+
             saveButton.appendChild(saveIcon);
             observer.observe(movieImg);
             posterContainer.appendChild(saveButton);
@@ -123,11 +221,6 @@ const create = (elemento) => document.createElement(elemento);
             
             const movieTitle = create('p');
             movieTitle.className = 'movie-title';
-            if (movie.title === undefined) {
-                movieTitle.textContent = movie.name;
-            } else {
-                movieTitle.textContent = movie.title;
-            }
             
             const likeButton = create('button');
             likeButton.className = 'like-button';
@@ -137,6 +230,22 @@ const create = (elemento) => document.createElement(elemento);
             likeIcon.alt = 'like';
             likeIcon.src = './public/likeIcon.svg';
             
+            if (movie.title === undefined) {
+                movieTitle.textContent = movie.name;
+                setButtonSrc(movie.id, lists.favoriteSeries, likeIcon, buttonTypes.like);
+            } else {
+                movieTitle.textContent = movie.title;
+                setButtonSrc(movie.id, lists.favoriteMovies, likeIcon, buttonTypes.like);
+            }
+
+            likeButton.addEventListener('click', () => {
+                if (movie.title === undefined) {
+                    addOrRemoveMedia(movie, listsName[3], likeIcon, buttonTypes.like);
+                } else {
+                    addOrRemoveMedia(movie, listsName[2], likeIcon, buttonTypes.like);
+                }
+            })
+
             likeButton.appendChild(likeIcon);
             
             movieTitleLike.appendChild(movieTitle);
@@ -194,6 +303,11 @@ async function modifyMainPanel (movieId, panel, mediaType) {
 
 }
 
+function cleanContainer (containerName) {
+    const container = document.getElementById(containerName);
+    container.innerHTML = '';
+}
+
 async function getMoviesPreview (URL, container, mediaNumber, sectionNumber) {
 
     createMoviesCardsSkeleton(container);
@@ -202,6 +316,8 @@ async function getMoviesPreview (URL, container, mediaNumber, sectionNumber) {
     try {
         const { data } = await api(URL);
         const movies = data.results;
+
+        cleanContainer(container);
         createMoviesCards(movies, container);
         
         container.innerHTML = '';
@@ -240,7 +356,7 @@ async function getMoviesPreview (URL, container, mediaNumber, sectionNumber) {
 
 
 function chargeHome() {
-    homeBody.style.display = 'flex';
+    // homeBody.style.display = 'flex';
     mainPanel.style.display = 'flex';
     moviesBody.style.display = 'flex';
     categoriesBody.style.display = 'none';
@@ -274,5 +390,37 @@ function chargeHome() {
         getMoviesPreview(url, `movie-cards${index+1}`, mediaRandomNumber, sectionRandomNumber);
     });
 }
+
+async function chargeTopicsMedia (URL, page, categoryId) {
+    const options = {
+        params: {
+            page
+        }
+    }
+    if (categoryId) {
+        options.params.with_genres = categoryId;
+    }
+
+    try {
+        const { data } = await api(URL, options);
+
+        if (page === 2) {
+            maxPages = data.total_pages;
+            console.log(maxPages)
+        }
+
+        const media = data.results;
+        console.log(media)
+
+        createMoviesCards(media, 'searchCards');
+
+    } catch (e) {
+
+    }
+}
+
+
+
+
 
 titleLogo.addEventListener('click', () => location.hash = '#home');

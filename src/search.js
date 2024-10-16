@@ -1,13 +1,13 @@
 function chargeSearch (query) {
   mainPanel.style.display = 'none';
-    categoriesBody.style.display = 'none';
-    moviesBody.style.display = 'none';
-    searchBody.style.display = 'flex';
-    searchBody2.style.display = 'flex';
-    backButtonSearch.style.display = 'flex';
-    getMediaByQuery(query, 'movie');
-    getMediaByQuery(query, 'tv');
-    closePreview();
+  categoriesBody.style.display = 'none';
+  moviesBody.style.display = 'none';
+  searchBody.style.display = 'flex';
+  searchBody2.style.display = 'flex';
+  backButtonSearch.style.display = 'flex';
+  getMediaByQuery(query, 'movie');
+  getMediaByQuery(query, 'tv');
+  closePreview();
 }
 
 async function getMediaByQuery(query, mediaType) {
@@ -29,10 +29,12 @@ async function getMediaByQuery(query, mediaType) {
     searchTitle2.className= 'section-title';
     
     if (mediaType === 'movie'){
-      searchTitle.textContent = `Movies related to ${query}`
+      searchTitle.textContent = `Movies related to ${query}`;
+      cleanContainer('searchCards');
       createMoviesCards(media, 'searchCards');
     } else {
-      searchTitle2.textContent = `Series related to ${query}`
+      searchTitle2.textContent = `Series related to ${query}`;
+      cleanContainer('searchCards2');
       createMoviesCards(media, 'searchCards2');
     }
   } catch (e) {

@@ -29,11 +29,12 @@
             </button>
           </div>
         </div>
-        <div class="navbar-options">
+        <div id="navOptions" class="navbar-options">
           <a href="#home" id="homeLink" >Home</a>
           <a href="#series-all" id="moviesLink" >Series</a>
           <a href="#movies-all" id="categoriesLink">Movies</a>
-          <a href="#mylist" id="myListLink">My List</a>
+          <a href="#my-list" id="myListLink">My List</a>
+          <ul></ul>
           <button class="user-icon-button">
             <img
             class="user-icon"
@@ -114,11 +115,12 @@
       <main id="moviesBody" class="movies">
         <section class="popular-movies-list">
           
+          <h1 id="myListTitle" class="mylist-title">My Lists 🤍</h1>
 
           <div class="movies-section">
             <div class="section-container">
               <div class="section-title-button-container">
-                <h2 id="title1" class="section-title"></h2>
+                <h2 id="title1" class="section-title skeleton skeleton-title"></h2>
                 <a class="more-button">See More</a>
               </div>
               <div class="movie-scroll">
@@ -187,7 +189,7 @@
             </div>
           </div>
 
-          <div class="movies-section">
+          <div id="sectionFive" class="movies-section">
             <div class="section-container">
               <div class="section-title-button-container">
                 <h2 id="title5" class="section-title skeleton skeleton-title"></h2>
@@ -409,6 +411,7 @@
     <script src="./src/main.js"></script>
     <script src="./src/movies.js"></script>
     <script src="./src/movie-preview.js"></script>
+    <script src="./src/myList.js"></script>
     <script src="./src/navigation.js"></script>
     <script src="./src/series.js"></script>
     <script src="./src/search.js"></script>

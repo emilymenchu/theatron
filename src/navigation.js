@@ -4,9 +4,51 @@ console.log(hashHistory);
 let previousHashPreview = location.hash;
 let previewCount = 0;
 
+let pageCounter = 1;
 
-window.addEventListener('DOMContentLoaded', navigator, false);
-window.addEventListener('hashchange', navigator, false);
+let maxPages = 5;
+
+const moreButtons = document.querySelectorAll('.more-button');
+
+
+const hashes = {
+    home: '#home',
+    search: '#search=',
+    movies: '#movies-all',
+    moviesCategory: '#movies-category=',
+    series: '#series-all',
+    seriesCategory: '#series-category=',
+    preview: '#preview/',
+    trending: '#trending-now',
+    topRatedSeries: '#top-rated-series',
+    popularMovies: '#popular-movies',
+    topRatedMovies: '#top-rated-movies',
+    upcomingMovies: '#upcoming-movies',
+    myList: '#my-list'
+}
+
+moreButtons.forEach((moreButton, index) => {
+    moreButton.addEventListener('click', () => {
+        if (index === 0) {
+            location.hash = hashes.trending;
+        } else if (index === 1) {
+            location.hash = hashes.topRatedSeries;
+        } else if (index === 2) {
+            location.hash = hashes.popularMovies;
+        } else if (index === 3) {
+            location.hash = hashes.topRatedMovies;
+        } else if (index === 4) {
+            location.hash = hashes.upcomingMovies;
+        }
+    })
+});
+
+let infiniteScrollRef;
+
+window.addEventListener('scroll', infiniteScrollRef, false);
+
+window.addEventListener('DOMContentLoaded', pageNavigator, false);
+window.addEventListener('hashchange', pageNavigator, false);
 
 searchButton.addEventListener('click', () => {
     if (searchInput.value != '') {
@@ -20,40 +62,85 @@ backButtonSearch.addEventListener('click', () => {
 } );
 
 function getBackInHistory () {
+
     if (hashHistory.length > 1) {
         hashHistory.pop();
         const previousHash = hashHistory[hashHistory.length - 1];
         location.hash = previousHash;
     } else {
-        location.hash = '#home';
+        location.hash = hashes.home;
     }
 
 }
 
-function navigator(){    
+function pageNavigator(){ 
 
-    if (location.hash.startsWith('#search=')){
-        const [notImportant, query] = location.hash.split('=');
-        const newQuery = decodeURI(query);
-        chargeSearchPage(newQuery);
-    } else if (location.hash.startsWith('#movies-all')){
-        chargeMoviesCategories();
-    } else if (location.hash.startsWith('#movies-category=')) {
-        const { id, name } = getCategoryFromHash('#movies-category=', location.hash);
-        chargeMoviesByCategory(id, name);
-    } else if (location.hash.startsWith('#series-all')){
-        chargeSeriesCategories();
-    } else if (location.hash.startsWith('#series-category=')) {
-        const { id, name } = getCategoryFromHash('#series-category=', location.hash);
-        chargeSeriesByCategory(id, name);
-    } else if (location.hash.startsWith('#preview/')) {
-        const { mediaType, mediaId } = getDataFromHashPreview();
-        previewCount++;
-        popupMoviePreview(mediaId, mediaType);
-    } else if (location.hash.startsWith('#home')){
-        chargeHomePage();
+    if (location.hash.startsWith('#my-list')){
+        sectionFive.style.display = 'none';
     } else {
-        location.hash = '#home';
+        sectionFive.style.display = 'block';
+    }
+    
+    if (infiniteScrollRef) {
+        window.removeEventListener('scroll', infiniteScrollRef, {passive: false});
+        infiniteScrollRef = undefined;
+    }
+
+    pageCounter = 1;
+
+    // if (hashHistory.length > 1 && hashHistory[hashHistory.length -1].contains(hashes.preview)) {
+
+    //     console.log(!(hashHistory.length > 1 && !hashHistory[hashHistory.length -1].contains(hashes.preview)));
+
+        if (location.hash.startsWith(hashes.search)){
+            const [notImportant, query] = location.hash.split('=');
+            const newQuery = decodeURI(query);
+            chargeSearchPage(newQuery);
+        } else if (location.hash.startsWith(hashes.movies)){
+            chargeMoviesCategories();
+        } else if (location.hash.startsWith(hashes.moviesCategory)) {
+            const { id, name } = getCategoryFromHash(hashes.moviesCategory, location.hash);
+            chargeMoviesByCategory(id, name);
+            infiniteScrollRef = infiniteScroll('/discover/movie', id);
+        } else if (location.hash.startsWith(hashes.series)){
+            chargeSeriesCategories();
+        } else if (location.hash.startsWith(hashes.seriesCategory)) {
+            const { id, name } = getCategoryFromHash(hashes.seriesCategory, location.hash);
+            chargeSeriesByCategory(id, name);
+            infiniteScrollRef = infiniteScroll('/discover/tv', id);
+        } else if (location.hash.startsWith(hashes.preview)) {
+            const { mediaType, mediaId } = getDataFromHashPreview();
+            previewCount++;
+            popupMoviePreview(mediaId, mediaType);
+        } else if (location.hash.startsWith(hashes.trending)) {
+            chargeTopicsPage(URL_TRENDING, homeTitles[0]);
+            infiniteScrollRef = infiniteScroll(URL_TRENDING);
+        } else if (location.hash.startsWith(hashes.topRatedSeries)) {
+            chargeTopicsPage(URL_TOP_RATED_SERIES, homeTitles[1]);
+            infiniteScrollRef = infiniteScroll(URL_TOP_RATED_SERIES);
+        } else if (location.hash.startsWith(hashes.popularMovies)) {
+            chargeTopicsPage(URL_MOVIE_POPULAR, homeTitles[2]);
+            infiniteScrollRef = infiniteScroll(URL_MOVIE_POPULAR);
+        } else if (location.hash.startsWith(hashes.topRatedMovies)) {
+            chargeTopicsPage(URL_TOP_RATED_MOVIES, homeTitles[3]);
+            infiniteScrollRef = infiniteScroll(URL_TOP_RATED_MOVIES);
+        } else if (location.hash.startsWith(hashes.upcomingMovies)) {
+            chargeTopicsPage(URL_UPCOMING_MOVIES, homeTitles[4]);
+            infiniteScrollRef = infiniteScroll(URL_UPCOMING_MOVIES);
+        } else if (location.hash.startsWith(hashes.myList)){
+            chargeMyListPage();
+        } else if (location.hash.startsWith(hashes.home)){
+            chargeHomePage();
+        } else {
+            location.hash = hashes.home;
+        }
+
+    
+    //}
+
+    if (infiniteScrollRef) {
+        window.addEventListener('scroll', infiniteScrollRef, {passive: false});
+        console.log("Infinite scroll added")
     }
 
     if (!location.hash.startsWith('#preview/')){
@@ -61,10 +148,23 @@ function navigator(){
         previewCount = 0;
         smoothscroll();
     }
-    
-    // previousHashAux = previousHash;
-    // previousHash = location.hash;
-    // console.log('2. ', previousHash, ' ', previousHashAux);
+
+    if (location.hash.startsWith('#home')){
+        moreButtons.forEach(moreButton => {
+            moreButton.style.display = 'block';    
+        })
+    } else {
+        moreButtons.forEach(moreButton => {
+            moreButton.style.display = 'none';    
+        })    
+    }
+
+    if (!location.hash.startsWith(hashes.search)){
+        searchBody2.style.display = 'none'
+    } else {
+        searchBody2.style.display = 'block'
+
+    }
 
     const currentHash = location.hash;
 
@@ -72,16 +172,17 @@ function navigator(){
         hashHistory.push(currentHash);
     }
     console.log(hashHistory);
-
 }
 
 
 function chargeHomePage() {
     chargeHome();
+    myListTitle.style.display = 'none';
 }
 
 function chargeSearchPage(query) {
-    chargeSearch(query)
+    chargeSearch(query);
+    myListTitle.style.display = 'none';
 }
 
 function chargeMoviesCategories() {
@@ -94,7 +195,7 @@ function chargeMoviesCategories() {
     getMoviesCategoriesList();
     closePreview();
     searchInput.value = '';
-
+    myListTitle.style.display = 'none';
 }
 
 function chargeMoviesByCategory(categoryId, categoryName) {
@@ -107,6 +208,7 @@ function chargeMoviesByCategory(categoryId, categoryName) {
     getMoviesByCategory(categoryId, categoryName);
     closePreview();
     searchInput.value = '';
+    myListTitle.style.display = 'none';
 }
 
 function chargeSeriesCategories() {
@@ -119,6 +221,7 @@ function chargeSeriesCategories() {
     getSeriesCategoriesList();
     closePreview();
     searchInput.value = '';
+    myListTitle.style.display = 'none';
 }
 
 function chargeSeriesByCategory(categoryId, categoryName) {
@@ -131,12 +234,57 @@ function chargeSeriesByCategory(categoryId, categoryName) {
     getSeriesByCategory(categoryId, categoryName);
     closePreview();
     searchInput.value = '';
+    myListTitle.style.display = 'none';
 }
 
-function chargeMyList () {
+function chargeTopicsPage (URL, title) {
+    mainPanel.style.display = 'none';
+    categoriesBody.style.display = 'none';
+    moviesBody.style.display = 'none';
+    searchBody.style.display = 'flex';
+    searchBody2.style.display = 'none';
+    backButtonSearch.style.display = 'flex';
     closePreview();
     searchInput.value = '';
+    myListTitle.style.display = 'none';
+
+    createMoviesCardsSkeleton('searchCards');
+    cleanContainer('searchCards');
+    searchTitle.textContent = title;
+    chargeTopicsMedia(URL, pageCounter)
 }
+
+function infiniteScroll (URL, categoryId) {
+
+    return function () {
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollTop = document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight;
+    
+        const isScrollBottom = (scrollTop + clientHeight + 0.5) >= (scrollHeight);
+        const pageIsNotMax = pageCounter < maxPages;
+    
+        if (isScrollBottom && pageIsNotMax) {
+            pageCounter++;
+            chargeTopicsMedia(URL, pageCounter, categoryId);
+            console.log("page:", pageCounter)
+        }
+    }
+}
+
+function chargeMyListPage () {
+    mainPanel.style.display = 'none';
+    moviesBody.style.display = 'flex';
+    categoriesBody.style.display = 'none';
+    searchBody.style.display = 'none';
+    searchInput.value = '';
+    myListTitle.style.display = 'block';
+    closePreview();
+    chargeMyLists();
+}
+
+
+
 
 function getCategoryFromHash(startOfHash, hash) {
     const hashData = hash.replace(startOfHash, '');

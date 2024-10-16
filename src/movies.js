@@ -53,8 +53,8 @@ async function getCategoryPreview(categoryId, containerId){
                 with_genres: categoryId
             }
         });
-        const container = document.getElementById(containerId);
-        container.innerHTML = '';
+        
+        cleanContainer(containerId);
         const movies = data.results;
         createMoviesCards(movies, containerId);
     } catch (e) {
@@ -87,6 +87,7 @@ async function getMoviesByCategory(categoryId, categoryName) {
     });
 
     const movies = data.results;
+    cleanContainer('searchCards');
     createMoviesCards(movies, 'searchCards');
 }
 

@@ -53,6 +53,7 @@ async function getSeriesCategoriesPreview(categoryId, containerId){
     });
 
     const series = data.results;
+    cleanContainer(containerId);
     createMoviesCards(series, containerId);
 }
 
@@ -71,6 +72,6 @@ async function getSeriesByCategory(categoryId, categoryName){
     });
 
     const series = data.results;
-
+    cleanContainer('searchCards');
     createMoviesCards(series, 'searchCards');
 }
