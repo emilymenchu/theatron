@@ -92,6 +92,8 @@ function pageNavigator(){
 
     //     console.log(!(hashHistory.length > 1 && !hashHistory[hashHistory.length -1].contains(hashes.preview)));
 
+    const titles = Object.values(homeTitleTranslation[language]);    
+
         if (location.hash.startsWith(hashes.search)){
             const [notImportant, query] = location.hash.split('=');
             const newQuery = decodeURI(query);
@@ -113,19 +115,19 @@ function pageNavigator(){
             previewCount++;
             popupMoviePreview(mediaId, mediaType);
         } else if (location.hash.startsWith(hashes.trending)) {
-            chargeTopicsPage(URL_TRENDING, homeTitles[0]);
+            chargeTopicsPage(URL_TRENDING, titles[0]);
             infiniteScrollRef = infiniteScroll(URL_TRENDING);
         } else if (location.hash.startsWith(hashes.topRatedSeries)) {
-            chargeTopicsPage(URL_TOP_RATED_SERIES, homeTitles[1]);
+            chargeTopicsPage(URL_TOP_RATED_SERIES, titles[1]);
             infiniteScrollRef = infiniteScroll(URL_TOP_RATED_SERIES);
         } else if (location.hash.startsWith(hashes.popularMovies)) {
-            chargeTopicsPage(URL_MOVIE_POPULAR, homeTitles[2]);
+            chargeTopicsPage(URL_MOVIE_POPULAR, titles[2]);
             infiniteScrollRef = infiniteScroll(URL_MOVIE_POPULAR);
         } else if (location.hash.startsWith(hashes.topRatedMovies)) {
-            chargeTopicsPage(URL_TOP_RATED_MOVIES, homeTitles[3]);
+            chargeTopicsPage(URL_TOP_RATED_MOVIES, titles[3]);
             infiniteScrollRef = infiniteScroll(URL_TOP_RATED_MOVIES);
         } else if (location.hash.startsWith(hashes.upcomingMovies)) {
-            chargeTopicsPage(URL_UPCOMING_MOVIES, homeTitles[4]);
+            chargeTopicsPage(URL_UPCOMING_MOVIES, titles[4]);
             infiniteScrollRef = infiniteScroll(URL_UPCOMING_MOVIES);
         } else if (location.hash.startsWith(hashes.myList)){
             chargeMyListPage();
