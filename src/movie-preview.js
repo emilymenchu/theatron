@@ -72,10 +72,21 @@ async function modifyPreviewPanel (movieId, mediaType) {
 
         pvCategoriesContainer.innerHTML = '';
 
-        if (mediaType === 'movie') {
+        if (mediaType === 'person'){
+            mpMainPanel.textContent = data.name;
+            if (!data.deathday === undefined){
+                mpReleasedDate.textContent = data.birthday, '-', data.deathday;
+            } else {
+                mpReleasedDate.textContent = data.birthday;
+            }
+            mpRating.textContent = data.popularity.toFixed(1);
+            mpDescription.textContent= data.biography;
+        } else if (mediaType === 'movie') {
             mpMainTitle.textContent = data.title;
             mpReleasedDate.textContent = data.release_date;
-            mpMovieMediaType.textContent = 'Movie';
+            mpMovieMediaType.textContent = 'Person';
+            mpRating.textContent = data.vote_average.toFixed(1);
+            mpDescription.textContent= data.overview;
         } else {
             mpMainTitle.textContent = data.name;
             mpReleasedDate.textContent = data.first_air_date;
@@ -88,18 +99,19 @@ async function modifyPreviewPanel (movieId, mediaType) {
                 pCreator.className = 'p-creator'
                 creatorsContainer.appendChild(pCreator);
             });
+            mpRating.textContent = data.vote_average.toFixed(1);
+            mpDescription.textContent= data.overview;
         }
         
-        mpRating.textContent = data.vote_average.toFixed(1);
-        mpDescription.textContent= data.overview;
+        const imgUrl = mediaType === "person" ? `${URL_BASE_IMG_2000}${data.profile_path}` : `${URL_BASE_IMG_2000}${data.backdrop_path}`;
 
         const img = new Image();
-        img.src = `${URL_BASE_IMG_2000}${data.backdrop_path}`;
+        img.src = imgUrl;
 
         img.onload = () => {
             mpMainPanel.className = 'main-panel'
             mpPanel.style.background = 
-            `linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(${URL_BASE_IMG_2000}${data.backdrop_path}) center/cover no-repeat`;
+            `linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(${imgUrl}) center/cover no-repeat`;
         }
         
 
@@ -111,16 +123,18 @@ async function modifyPreviewPanel (movieId, mediaType) {
             
         });
 
-        const categories = data.genres;
-        
-        categories.forEach(category => {
-            const categoryContainer = create('div');
-            categoryContainer.className = 'movie-category';
-            categoryContainer.textContent = category.name;
+        if (mediaType !== "person") {
+            const categories = data.genres;
             
-            pvCategoriesContainer.appendChild(categoryContainer);
-            
-        });
+            categories.forEach(category => {
+                const categoryContainer = create('div');
+                categoryContainer.className = 'movie-category';
+                categoryContainer.textContent = category.name;
+                
+                pvCategoriesContainer.appendChild(categoryContainer);
+                
+            });
+        }
     } catch (e) {
         console.error('Error getting movie img:' + e);
     }
@@ -129,11 +143,17 @@ async function modifyPreviewPanel (movieId, mediaType) {
 async function getSimilar(mediaType, mediaId) {
     createMoviesCardsSkeleton('pvSimilarContainer');
     try {
-        const URL_SIMILAR = `/${mediaType}/${mediaId}/similar`;
-        const { data } = await api(URL_SIMILAR);
-        const movies = data.results;
-        cleanContainer('pvSimilarContainer');
-        createMoviesCards(movies, 'pvSimilarContainer');
+        if (mediaType === 'person' && knownFor !== undefined) {
+            const movies = knownFor;
+            cleanContainer('pvSimilarContainer');
+            createMoviesCards(movies, 'pvSimilarContainer');
+        } else {
+            const URL_SIMILAR = `/${mediaType}/${mediaId}/similar`;
+            const { data } = await api(URL_SIMILAR);
+            const movies = data.results;
+            cleanContainer('pvSimilarContainer');
+            createMoviesCards(movies, 'pvSimilarContainer');
+        }
     
     } catch (e) {
         console.error('Error getting similar movies: ' + e);

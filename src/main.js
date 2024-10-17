@@ -1,44 +1,5 @@
-const api = axios.create({
-    baseURL: 'https://api.themoviedb.org/3',
-    headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-        'Authorization': `Bearer ${API_KEY}`
-    },
-    params: {
-        "language": 'ko'
-    }
-});
-const URL_BASE_IMG = 'https://image.tmdb.org/t/p/w500/';
-const URL_BASE_IMG_2000 = 'https://image.tmdb.org/t/p/original';
 
-const URL_TRENDING = '/trending/all/day'
-const URL_MOVIE_POPULAR = '/movie/popular';
-const URL_TOP_RATED_MOVIES = '/movie/top_rated';
-const URL_UPCOMING_MOVIES = '/movie/upcoming';
-const URL_TOP_RATED_SERIES = '/tv/top_rated';
-
-const URL_CATEGORIES = (mediaType) => `/genre/${mediaType}/list`;
-
-const containers = document.querySelectorAll('#homeBody .movie-cards');
-
-const homeTitles = ['Trending Now', 'top rated series', 'popular movies', 
-    'top rated movies', 'Upcoming movies']
-
-const URL_COMPLEMENTS = ['/trending/all/day', '/tv/top_rated', '/movie/popular', 
-    '/movie/top_rated', '/movie/upcoming'];
-
-const create = (elemento) => document.createElement(elemento);
-
-// let observer = new IntersectionObserver(handleIntersect);
-// observer.observe();
-
-// function handleIntersect (entries) {
-//     entries.forEach(entry => {
-//         if (entry.isIntersecting) {
-
-//         }
-//     })
-// }
+let language;
 
 const languages = {
     english: {
@@ -93,24 +54,115 @@ const languages = {
     }
 }
 
+
+const create = (elemento) => document.createElement(elemento);
+
 function languageMenu () {
-    const languagesContainer = create('div');
+    let codigoISO = navigator.language.split('-')[0];
+
+    let currentLanguage = Object.values(languages).find(lang => lang.code === codigoISO);
+
+    language = codigoISO;
+
+    languagesContainer.textContent = currentLanguage.name + ` (${currentLanguage.code}) ` + currentLanguage.flag;
+
+    const arrowDown = create('span');
+    arrowDown.className = 'arrow-down';
+    languagesBaseContainer.appendChild(arrowDown);
+
+    languagesBaseContainer.addEventListener('click', () => {
+        languageMenu.classList.toggle('show');
+    })
+
+    window.addEventListener('click', function(event){
+        if (!languagesBaseContainer.contains(event.target) && !languageMenu.contains(event.target)){
+            languageMenu.classList.remove('show')
+        }
+    })
 
     const languageMenu = create('div');
+    languageMenu.className = "languagesMenu";
+
 
     Object.values(languages).forEach(language => {
         const container = create('span');
-        container.textContent = language.name + ` (${language.code}) ` + language.flag;
+        container.className = 'language';
+        if (language.code === codigoISO) {
+            container.classList.add('active');
+        }
+        let langText = language.name + ` (${language.code}) ` + language.flag;
+        container.textContent = langText;
         languageMenu.appendChild(container);
+
+        container.addEventListener('click', () => setLanguage(langText, language.code));
     })
 
-    languagesContainer.appendChild(languageMenu)
+    languagesBaseContainer.appendChild(languageMenu);
 
-    navOptions.appendChild(languagesContainer);
 
 }
 
 languageMenu();
+
+function setLanguage (langText, code) {
+    const languagesList = document.querySelectorAll('.language');
+    languagesList.forEach(lang => {
+        lang.classList.remove('active');
+        if (lang.textContent === langText) {
+            lang.classList.add('active');
+            language = code;
+            languagesContainer.textContent = langText;
+            api.defaults.params["language"] = language;
+            console.log(language);
+            pageNavigator();
+        }
+    });
+
+}
+
+
+const api = axios.create({
+    baseURL: 'https://api.themoviedb.org/3',
+    headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'Authorization': `Bearer ${API_KEY}`
+    },
+    params: {
+        "language": language
+    }
+});
+const URL_BASE_IMG = 'https://image.tmdb.org/t/p/w500/';
+const URL_BASE_IMG_2000 = 'https://image.tmdb.org/t/p/original';
+
+const URL_TRENDING = '/trending/all/day'
+const URL_MOVIE_POPULAR = '/movie/popular';
+const URL_TOP_RATED_MOVIES = '/movie/top_rated';
+const URL_UPCOMING_MOVIES = '/movie/upcoming';
+const URL_TOP_RATED_SERIES = '/tv/top_rated';
+
+const URL_CATEGORIES = (mediaType) => `/genre/${mediaType}/list`;
+
+const containers = document.querySelectorAll('#homeBody .movie-cards');
+
+const homeTitles = ['Trending Now', 'top rated series', 'popular movies', 
+    'top rated movies', 'Upcoming movies']
+
+const URL_COMPLEMENTS = ['/trending/all/day', '/tv/top_rated', '/movie/popular', 
+    '/movie/top_rated', '/movie/upcoming'];
+
+let knownFor;
+
+// let observer = new IntersectionObserver(handleIntersect);
+// observer.observe();
+
+// function handleIntersect (entries) {
+//     entries.forEach(entry => {
+//         if (entry.isIntersecting) {
+
+//         }
+//     })
+// }
+
 
  function createMoviesCards (movies, containerName) {
     const movieCardsContainer = document.getElementById(containerName);
@@ -123,10 +175,10 @@ languageMenu();
         favoriteSeries: JSON.parse(localStorage.getItem(listsName[3]))
     };
 
-    listsName.forEach(listName => {
-        const list = JSON.parse(localStorage.getItem(listName));
+    // listsName.forEach(listName => {
+    //     const list = JSON.parse(localStorage.getItem(listName));
         
-    })
+    // })
 
 
     if (movies.length === 0) {
@@ -149,19 +201,29 @@ languageMenu();
                 movieImg.style.opacity = '1';
                 
             }
-            
-            if (movie.title === undefined) {
+            if (movie.media_type === 'person') {
+                movieImg.alt = movie.name;
+                movieImg.setAttribute('data-img', URL_BASE_IMG + movie.profile_path);
+                posterContainer.addEventListener('click', () => {
+                    knownFor = undefined;
+                    if (!movie.known_for === undefined){
+                        knownFor = movie.known_for;
+                    }
+                    location.hash = `#preview/person=${movie.id}`;
+                });
+            } else if (movie.title === undefined) {
                 movieImg.alt = movie.name;
                 posterContainer.addEventListener('click', () => {
                     location.hash = `#preview/tv=${movie.id}`;
                 });
+                movieImg.setAttribute('data-img', URL_BASE_IMG + movie.poster_path);
             } else {
                 movieImg.alt = movie.title;
                 posterContainer.addEventListener('click', () => {
                     location.hash = `#preview/movie=${movie.id}`;
                 });
+                movieImg.setAttribute('data-img', URL_BASE_IMG + movie.poster_path);
             }
-            movieImg.setAttribute('data-img', URL_BASE_IMG + movie.poster_path);
             posterContainer.appendChild(movieImg);
             
             movieImg.addEventListener('error', () => {
@@ -322,6 +384,10 @@ async function getMoviesPreview (URL, container, mediaNumber, sectionNumber) {
         
         container.innerHTML = '';
         
+        if (container === 'movie-cards1') {
+            console.log(movies);
+        }
+
         if (container === 'movie-cards1' && sectionNumber === 0) {
             const movieId = movies[mediaNumber].id;
             const mediaType = movies[mediaNumber].media_type;
