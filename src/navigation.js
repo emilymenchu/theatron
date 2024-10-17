@@ -172,12 +172,17 @@ function pageNavigator(){
         hashHistory.push(currentHash);
     }
     console.log(hashHistory);
+
+    translateNavBar();
 }
 
 
 function chargeHomePage() {
     chargeHome();
     myListTitle.style.display = 'none';
+    moreButtons.forEach(button => {
+        button.textContent = seeMoreTranslations[language].text;
+    });
 }
 
 function chargeSearchPage(query) {
@@ -218,7 +223,7 @@ function chargeSeriesCategories() {
     searchBody.style.display = 'none';
     searchBody2.style.display = 'none';
     backButtonSearch.style.display = 'none';
-    getSeriesCategoriesList();
+    getSeriesCategoriesList(true);
     closePreview();
     searchInput.value = '';
     myListTitle.style.display = 'none';
@@ -231,6 +236,7 @@ function chargeSeriesByCategory(categoryId, categoryName) {
     searchBody.style.display = 'flex';
     backButtonSearch.style.display = 'flex';
     searchBody2.style.display = 'none';
+    getSeriesCategoriesList(false);
     getSeriesByCategory(categoryId, categoryName);
     closePreview();
     searchInput.value = '';
@@ -283,8 +289,14 @@ function chargeMyListPage () {
     chargeMyLists();
 }
 
-
-
+function translateNavBar() {
+    searchInput.placeholder = navTranslations[language].search;
+    homeLink.textContent = navTranslations[language].home;
+    seriesLink.textContent = navTranslations[language].series;
+    moviesLink.textContent = navTranslations[language].movies;
+    myListLink.textContent = navTranslations[language].list;
+    developedBy.textContent = footerTranslations[language].message + " @emilymenchu";
+}
 
 function getCategoryFromHash(startOfHash, hash) {
     const hashData = hash.replace(startOfHash, '');

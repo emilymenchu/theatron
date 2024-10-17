@@ -53,7 +53,10 @@ async function modifyPreviewPanel (movieId, mediaType) {
         pvCategoriesContainer.appendChild(categoryContainer)
     });
 
-
+    pOverview.textContent = previewTranslations[language].overview;
+    pCreators.textContent = previewTranslations[language].creators;
+    pCategories.textContent = previewTranslations[language].categories;
+    pSimilar.textContent = previewTranslations[language].similar;
     
     try {
         const { data } = await api(`/${mediaType}/${movieId}`);
@@ -72,6 +75,8 @@ async function modifyPreviewPanel (movieId, mediaType) {
 
         pvCategoriesContainer.innerHTML = '';
 
+        previewAddButton.textContent = mpbTranslations[language].add;
+
         if (mediaType === 'person'){
             mpMainPanel.textContent = data.name;
             if (!data.deathday === undefined){
@@ -81,16 +86,18 @@ async function modifyPreviewPanel (movieId, mediaType) {
             }
             mpRating.textContent = data.popularity.toFixed(1);
             mpDescription.textContent= data.biography;
+            mpMovieMediaType.textContent = mediaTypeTranslations[language].person;
+
         } else if (mediaType === 'movie') {
             mpMainTitle.textContent = data.title;
             mpReleasedDate.textContent = data.release_date;
-            mpMovieMediaType.textContent = 'Person';
+            mpMovieMediaType.textContent = mediaTypeTranslations[language].movie;
             mpRating.textContent = data.vote_average.toFixed(1);
             mpDescription.textContent= data.overview;
         } else {
             mpMainTitle.textContent = data.name;
             mpReleasedDate.textContent = data.first_air_date;
-            mpMovieMediaType.textContent = 'Series';
+            mpMovieMediaType.textContent = mediaTypeTranslations[language].series;
             creatorsContainer.style.display = 'flex';
             const creatorsList = data.created_by;
             creatorsList.forEach(creator => {

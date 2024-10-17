@@ -1,13 +1,14 @@
-const texts = ['Movie Watch List', 'Series Watch List', 'Favorite Movies', 'Favorite Series']
-
 const listsName = ['movie_watch_list', 'series_watch_list', 'favorite_movies', 'favorite_series'];
 
 const buttonTypes = {save: 'save', like: 'like'};
 
 function chargeMyLists() {
-    title = document.querySelectorAll('.section-title');
+    const title = document.querySelectorAll('.section-title');
+    let translations = myListTranslations('✨');
+    let titles = Object.values(translations[language]);
+    myListTitle.textContent = titles[0];
     for (let index = 0; index < 4; index++) {
-        title[index].textContent = texts[index];
+        title[index].textContent = titles[index + 1];
         title[index].className = 'section-title';
     }
 

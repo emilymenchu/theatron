@@ -30,10 +30,10 @@
           </div>
         </div>
         <div id="navOptions" class="navbar-options">
-          <a href="#home" id="homeLink" >Home</a>
-          <a href="#series-all" id="moviesLink" >Series</a>
-          <a href="#movies-all" id="categoriesLink">Movies</a>
-          <a href="#my-list" id="myListLink">My List</a>
+          <a href="#home" id="homeLink"></a>
+          <a href="#series-all" id="seriesLink"></a>
+          <a href="#movies-all" id="moviesLink"></a>
+          <a href="#my-list" id="myListLink"></a>
           <div id="languagesBaseContainer">
             <div id="languagesContainer"></div>
           </div>
@@ -98,8 +98,8 @@
             </div>
 
             <div class="watch-add-buttons">
-              <button class="watch-button">watch now</button>
-              <button class="add-list-button">+ add to my list</button>
+              <button id="mpWButton" class="watch-button"></button>
+              <button id="mpAButton" class="add-list-button"></button>
             </div>
 
           </div>
@@ -117,13 +117,13 @@
       <main id="moviesBody" class="movies">
         <section class="popular-movies-list">
           
-          <h1 id="myListTitle" class="mylist-title">My Lists 🤍</h1>
+          <h1 id="myListTitle" class="mylist-title"></h1>
 
           <div class="movies-section">
             <div class="section-container">
               <div class="section-title-button-container">
                 <h2 id="title1" class="section-title skeleton skeleton-title"></h2>
-                <a class="more-button">See More</a>
+                <a class="more-button"></a>
               </div>
               <div class="movie-scroll">
                 <div class="cards-container">
@@ -141,7 +141,7 @@
             <div class="section-container">
               <div class="section-title-button-container">
                 <h2 id="title2" class="section-title skeleton skeleton-title"></h2>
-                <a class="more-button">See More</a>
+                <a class="more-button"></a>
               </div>
               <div class="movie-scroll">
                 <div class="cards-container">
@@ -159,7 +159,7 @@
             <div class="section-container">
               <div class="section-title-button-container">
                 <h2 id="title3" class="section-title skeleton skeleton-title"></h2>
-                <a class="more-button">See More</a>
+                <a class="more-button"></a>
               </div>
               <div class="movie-scroll">
                 <div class="cards-container">
@@ -177,7 +177,7 @@
             <div class="section-container">
               <div class="section-title-button-container">
                 <h2 id="title4" class="section-title skeleton skeleton-title"></h2>
-                <a class="more-button">See More</a>
+                <a class="more-button"></a>
               </div>
               <div class="movie-scroll">
                 <div class="cards-container">
@@ -195,7 +195,7 @@
             <div class="section-container">
               <div class="section-title-button-container">
                 <h2 id="title5" class="section-title skeleton skeleton-title"></h2>
-                <a class="more-button">See More</a>
+                <a class="more-button"></a>
               </div>
               <div class="movie-scroll">
                 <div class="cards-container">
@@ -333,7 +333,7 @@
               <button class="play-button-2">
                 <img src="./public/play.svg" alt="play">
               </button>
-              <button class="add-list-button">+ add to my list</button>
+              <button id="previewAddButton" class="add-list-button"></button>
             </div>
 
           </div>
@@ -343,13 +343,13 @@
       <main class="movie-details-parent">
 
         <section class="movie-details">
-          <h2>Overview</h2>
+          <h2 id="pOverview"></h2>
           <p id="mpDescription">
           </p>
          <div id="creatorsContainer" class="creators-container">
-              <p>Creators:</p>
+              <p id="pCreators"></p>
          </div>
-          <h2>Categories</h2>
+          <h2 id="pCategories"></h2>
           <div id="pvCategoriesContainer" class="movie-categories">
           </div>
         </section>
@@ -359,7 +359,7 @@
 
           <div class="movies-section">
             <div class="section-container" id="similarMoviesSection">
-              <h2 class="section-title">Similar Movies</h2>
+              <h2 id="pSimilar" class="section-title"></h2>
               <div class="movie-scroll">
                 <div class="cards-container">
                   <div id="pvSimilarContainer" class="movie-cards">
@@ -403,13 +403,14 @@
 
     <footer class="footer">
       <div class="footer-child"></div>
-      <b class="developed-by-emily">Developed by @emilymenchu</b>
+      <b id="developedBy" class="developed-by-emily">Developed by @emilymenchu</b>
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./src/secrets.js"></script>
     <script src="./src/skeleton.js"></script>
     <script src="./src/observer.js"></script>
+    <script src="./src/textsTranslations.js"></script>
     <script src="./src/main.js"></script>
     <script src="./src/movies.js"></script>
     <script src="./src/movie-preview.js"></script>

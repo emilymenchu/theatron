@@ -144,9 +144,6 @@ const URL_CATEGORIES = (mediaType) => `/genre/${mediaType}/list`;
 
 const containers = document.querySelectorAll('#homeBody .movie-cards');
 
-const homeTitles = ['Trending Now', 'top rated series', 'popular movies', 
-    'top rated movies', 'Upcoming movies']
-
 const URL_COMPLEMENTS = ['/trending/all/day', '/tv/top_rated', '/movie/popular', 
     '/movie/top_rated', '/movie/upcoming'];
 
@@ -331,11 +328,11 @@ async function modifyMainPanel (movieId, panel, mediaType) {
         if (mediaType === 'movie') {
             homeMainTitle.textContent = data.title;
             homeMovieReleaseDate.textContent = data.release_date;
-            homeMovieMediaType.textContent = 'Movie';
+            homeMovieMediaType.textContent = mediaTypeTranslations[language].movie;
         } else {
             homeMainTitle.textContent = data.name;
             homeMovieReleaseDate.textContent = data.first_air_date;
-            homeMovieMediaType.textContent = 'Series';
+            homeMovieMediaType.textContent = mediaTypeTranslations[language].series;
         }
         
         homeMovieRating.textContent = data.vote_average.toFixed(1);
@@ -428,18 +425,20 @@ function chargeHome() {
     categoriesBody.style.display = 'none';
     searchBody.style.display = 'none';
     searchInput.value = '';
+    mpWButton.textContent = mpbTranslations[language].watch;
+    mpAButton.textContent = mpbTranslations[language].add;
 
     closePreview();
     
     const mediaRandomNumber = Math.floor(Math.random() * 20);
     const sectionRandomNumber = Math.floor(Math.random() * 5);
 
-
+    const titles = Object.values(homeTitleTranslation[language]);
     for (let index = 0; index < containers.length; index++) {
 
         const sectionTitle = document.getElementById(`title${index+1}`);
         sectionTitle.className = 'section-title';
-        sectionTitle.textContent = homeTitles[index];    
+        sectionTitle.textContent = titles[index];    
         
     }
 
@@ -447,10 +446,10 @@ function chargeHome() {
         loadMoviesSkeleton(`movie-cards${index+1}`);
     });
 
-    for (let index = 0; index < containers.length; index++) {
-        const sectionTitle = document.getElementById(`title${index+1}`);
-        sectionTitle.textContent = homeTitles[index];      
-    }
+    // for (let index = 0; index < containers.length; index++) {
+    //     const sectionTitle = document.getElementById(`title${index+1}`);
+    //     sectionTitle.textContent = homeTitles[index];      
+    // }
 
     URL_COMPLEMENTS.forEach((url, index) => {
         getMoviesPreview(url, `movie-cards${index+1}`, mediaRandomNumber, sectionRandomNumber);

@@ -1,6 +1,6 @@
 const seriesCategoriesId = [];
 
-async function getSeriesCategoriesList() {
+async function getSeriesCategoriesList(chargePreview) {
     categoriesContainer.innerHTML = '';
     Array(20).fill(0).forEach(o => {
         const categoryButtonSkeleton = create('div');
@@ -32,14 +32,16 @@ async function getSeriesCategoriesList() {
             categoriesContainer.appendChild(categoryButton);
         });
         
-        const ids = getRandom5Ids(seriesCategoriesId);
+        if (chargePreview) {
+            const ids = getRandom5Ids(seriesCategoriesId);
         
         ids.forEach((id, index) => {
             const sectionTitle = document.getElementById(`title${index+1}`);
             sectionTitle.className = 'section-title';
             sectionTitle.textContent = findCategoryById(categories, id).name;
             getSeriesCategoriesPreview(id, `movie-cards${index+1}`);
-        });       
+        });      
+        } 
     } catch (e) {
         console.error("Error getting series: " + e);
     }
