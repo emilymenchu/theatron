@@ -1,45 +1,109 @@
+const languages = {
+    english: {
+        name: 'English',
+        code: 'en',
+        flag: "🇬🇧"
+    },
+    spanish: {
+        name: 'Español',
+        code: 'es',
+        flag: "🇪🇸"
+    },
+    french: {
+        name: 'Français',
+        code: 'fr',
+        flag: "🇫🇷"
+    },
+    japanese: {
+        name: '日本語 (Nihongo)',
+        code: 'ja',
+        flag: "🇯🇵"
+    },
+    korean: {
+        name: '한국어 (Hangugeo)',
+        code: 'ko',
+        flag: "🇰🇷"
+    },
+    chinese: {
+        name: '中文 (Zhōngwén)',
+        code: 'zh',
+        flag: "🇨🇳"
+    },
+    portuguese: {
+        name: 'Português',
+        code: 'pt',
+        flag: "🇵🇹"
+    },
+    italian: {
+        name: 'Italiano',
+        code: 'it',
+        flag: "🇮🇹"
+    },
+    russian: {
+        name: 'Русский (Russkiy)',
+        code: 'ru',
+        flag: "🇷🇺"
+    },
+    german: {
+        name: 'Deutsch',
+        code: 'de',
+        flag: "🇩🇪"
+    }
+}
+
 const mpbTranslations = {
     en: {
         watch: "Watch Now",
-        add: "+ Add To My Playlist"
+        add: "+ Add To My Playlist",
+        added: "Added to Playlist"
     },
     es: {
         watch: "Ver Ahora",
-        add: "+ Agregar a mi Lista"
+        add: "+ Agregar a mi Lista",
+        added: "Agregado a la Lista"
     },
     fr: {
         watch: "Regarder Maintenant",
-        add: "+ Ajouter à ma Playlist"
+        add: "+ Ajouter à Ma Liste",
+        added: "Ajouté à la Liste"
     },
     ja: {
         watch: "今すぐ見る",
-        add: "+ マイプレイリストに追加"
+        add: "+ プレイリストに追加",
+        added: "プレイリストに追加済み"
     },
     ko: {
-        watch: "지금 시청",
-        add: "+ 내 재생목록에 추가"
+        watch: "지금 보기",
+        add: "+ 내 재생 목록에 추가",
+        added: "재생 목록에 추가됨"
     },
     zh: {
         watch: "立即观看",
-        add: "+ 添加到我的播放列表"
+        add: "+ 添加到播放列表",
+        added: "已添加到播放列表"
     },
     pt: {
         watch: "Assistir Agora",
-        add: "+ Adicionar à Lista"
+        add: "+ Adicionar à Minha Lista",
+        added: "Adicionado à Lista"
     },
     it: {
         watch: "Guarda Ora",
-        add: "+ Aggiungi alla Playlist"
+        add: "+ Aggiungi alla Mia Lista",
+        added: "Aggiunto alla Lista"
     },
     ru: {
         watch: "Смотреть Сейчас",
-        add: "+ Добавить в Мой Плейлист"
+        add: "+ Добавить в Мой Плейлист",
+        added: "Добавлено в Плейлист"
     },
     de: {
-        watch: "Jetzt Ansehen",
-        add: "+ Zur Playlist hinzufügen"
+        watch: "Jetzt Anschauen",
+        add: "+ Zur Meiner Liste Hinzufügen",
+        added: "Zur Liste Hinzugefügt"
     }
-}
+};
+
 
 const navTranslations = {
     en: {

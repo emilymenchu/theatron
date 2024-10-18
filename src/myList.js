@@ -48,6 +48,20 @@ function setLists () {
 
 setLists();
 
+function addOrRemoveMediaPanel (media, listName, button) {
+    const list = JSON.parse(localStorage.getItem(listName));
+    if (list[media.id]) {
+        list[media.id] = undefined;
+        button.textContent = mpbTranslations[language].add;
+        button.style.background = 'none';
+    } else {
+        list[media.id] = media;
+        button.textContent = mpbTranslations[language].added;
+        button.style.background = 'rgb(37 37 82)';
+    }
+    localStorage.setItem(listName, JSON.stringify(list));
+}
+
 function addOrRemoveMedia (media, listName, icon, buttonType) {
     const list = JSON.parse(localStorage.getItem(listName));
 
@@ -76,7 +90,6 @@ function addOrRemoveMedia (media, listName, icon, buttonType) {
         createListCards();
         console.log('refreshed')
     }
-
 }
 
 function setButtonSrc (id, list, icon, buttonType) {

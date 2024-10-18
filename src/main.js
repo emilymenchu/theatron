@@ -1,59 +1,4 @@
-
 let language;
-
-const languages = {
-    english: {
-        name: 'English',
-        code: 'en',
-        flag: "🇬🇧"
-    },
-    spanish: {
-        name: 'Español',
-        code: 'es',
-        flag: "🇪🇸"
-    },
-    french: {
-        name: 'Français',
-        code: 'fr',
-        flag: "🇫🇷"
-    },
-    japanese: {
-        name: '日本語 (Nihongo)',
-        code: 'ja',
-        flag: "🇯🇵"
-    },
-    korean: {
-        name: '한국어 (Hangugeo)',
-        code: 'ko',
-        flag: "🇰🇷"
-    },
-    chinese: {
-        name: '中文 (Zhōngwén)',
-        code: 'zh',
-        flag: "🇨🇳"
-    },
-    portuguese: {
-        name: 'Português',
-        code: 'pt',
-        flag: "🇵🇹"
-    },
-    italian: {
-        name: 'Italiano',
-        code: 'it',
-        flag: "🇮🇹"
-    },
-    russian: {
-        name: 'Русский (Russkiy)',
-        code: 'ru',
-        flag: "🇷🇺"
-    },
-    german: {
-        name: 'Deutsch',
-        code: 'de',
-        flag: "🇩🇪"
-    }
-}
-
 
 const create = (elemento) => document.createElement(elemento);
 
@@ -62,7 +7,14 @@ function languageMenu () {
 
     let currentLanguage = Object.values(languages).find(lang => lang.code === codigoISO);
 
-    language = codigoISO;
+    console.log(Object.values(languages))
+    if (currentLanguage !== undefined) {
+        language = codigoISO;
+    } else {
+        language = languages.english.code;
+        currentLanguage = languages.english;
+    }
+
 
     languagesContainer.textContent = currentLanguage.name + ` (${currentLanguage.code}) ` + currentLanguage.flag;
 
@@ -164,7 +116,6 @@ let knownFor;
  function createMoviesCards (movies, containerName) {
     const movieCardsContainer = document.getElementById(containerName);
 
-    // movieCardsContainer.innerHTML = '';
     const lists = {
         movieWatchList: JSON.parse(localStorage.getItem(listsName[0])),
         seriesWatchList: JSON.parse(localStorage.getItem(listsName[1])),
@@ -176,7 +127,6 @@ let knownFor;
     //     const list = JSON.parse(localStorage.getItem(listName));
         
     // })
-
 
     if (movies.length === 0) {
         similarMoviesSection.style.display = 'none';
@@ -233,7 +183,7 @@ let knownFor;
                 const altIcon = create('img');
                 altIcon.className = "alt-icon"
                 altIcon.alt = 'icon';
-                altIcon.src = './public/movie.svg'
+                altIcon.src = './public/movie.svg';
                 imgAlternativeContainer.appendChild(altIcon);
                 imgAlternativeContainer.appendChild(movieTitleAlt);
                 posterContainer.appendChild(imgAlternativeContainer);
@@ -318,13 +268,38 @@ let knownFor;
     }
 }
 
+let mpMediaType;
+let mpMediaId;
+let mpMedia;
+
+mainPanel.addEventListener('click', (event) => {
+    if (mpMediaId !== undefined && mpMediaType !== undefined) {
+        location.hash = hashes.preview + mpMediaType + '=' + mpMediaId;
+    }
+});
+
+mpAButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    if (mpMedia !== undefined && mpMediaType !== undefined) {
+        const list = mpMediaType = "movie" ? listsName[0] : listsName[1];
+        addOrRemoveMediaPanel(mpMedia, list, mpAButton);
+    }
+});
+
 async function modifyMainPanel (movieId, panel, mediaType) {
+    mpMediaType = undefined;
+    mpMediaId = undefined;
+    mpMedia = undefined;
     mainPanel.className = 'main-panel skeleton';
     movieTitleAltContainer.style.display = 'none';
     try {
         
         const { data } = await api(`/${mediaType}/${movieId}`); 
         
+        mpMediaType = mediaType;
+        mpMediaId = movieId;
+        mpMedia = data;
+
         if (mediaType === 'movie') {
             homeMainTitle.textContent = data.title;
             homeMovieReleaseDate.textContent = data.release_date;
@@ -350,6 +325,10 @@ async function modifyMainPanel (movieId, panel, mediaType) {
         img.addEventListener('error', () => {
             console.log('error');
             mainPanel.className = 'main-panel'
+            const altIcon = create('img');
+                altIcon.className = "alt-icon"
+                altIcon.alt = 'icon';
+                altIcon.src = './public/movie.svg';
             movieTitleAltContainer.appendChild(altIcon);
             movieTitleAltContainer.style.display = 'block';
             mainPanel.style.background = 'black';
